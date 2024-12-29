@@ -13,9 +13,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
 
-        User::factory(25)->create([
-        ]);
+        User::factory(25)->create([]);
+
+        $this->call(PatientSeeder::class);
+
+        $this->call(AppointmentSeeder::class);
+
+        $this->call(ConversationSeeder::class);
+
+        $this->call(MessageSeeder::class);
     }
 }

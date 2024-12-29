@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('created_by')->default('system');
             $table->string('name', 50);
             $table->string('TCKN')->unique();
-            $table->string('tcknRaw')->unique();
+            $table->string('tcknRaw')->unique();/* Hash durumu kontrol edilecek!!! */
             $table->string('doctor')->nullable();
             $table->string('phone_number', 20)->unique();
             $table->enum('gender', ['male', 'female'])->nullable();

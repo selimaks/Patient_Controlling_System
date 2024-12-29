@@ -24,7 +24,7 @@ class PatientFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'TCKN' => Hash::make($tcknRaw),
-            'tcknRaw' => $tcknRaw,
+            'tcknRaw' => $tcknRaw, /* Hash durumu kontrol edilecek!!! */
             'phone_number' => fake()->phoneNumber(),
             'gender' => fake()->randomElement(['male', 'female']),
             'email_verified_at' => now(),
