@@ -1,0 +1,32 @@
+/vendor/
+/node_modules/
+
+/public/hot
+/public/storage
+/storage/*.key
+/storage/framework/*
+!/storage/framework/.gitignore
+/storage/logs/*
+!/storage/logs/.gitignore
+
+.env
+.env.*
+.phpunit.result.cache
+.phpunit-watcher.cache
+
+Homestead.json
+Homestead.yaml
+*.sublime-project
+*.sublime-workspace
+*.vscode/*
+.idea
+.DS_Store
+Thumbs.db
+
+# Log and debug output
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Composer
+composer.lock
