@@ -1,5 +1,6 @@
 import { useState, MouseEvent } from "react"
 import { Box, Button, ButtonGroup, Card, CardContent, CardHeader, Container, Divider } from "@mui/material"
+import "../../css/app.css"
 
 import { Calendar, type Event, dateFnsLocalizer } from "react-big-calendar"
 
@@ -156,7 +157,7 @@ const EventCalendar = () => {
 
   return (
     <Box
-      mt={2}
+      mt={-10}
       mb={2}
       component="main"
       sx={{

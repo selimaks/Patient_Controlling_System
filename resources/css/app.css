@@ -1,3 +1,56 @@
+:root {
+    --background: #fdfefe;
+    --background-secondary: #e2d4da;
+    --background-tertiary: #d3ccd3;
+    --background-quaternary: #ddc3cd;
+    --background-quinary: #d8afbd;
+    --text-primary: #1d1216;
+    --text-secondary: #344358;
+    --button-primary: #d95b46;
+    --button-secondary: #f8b87c;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.MuiCardContent-root{
+    background-color: var(--background-secondary);
+}
+.rbc-btn-group{
+    background-color: var(--button-primary) !important;
+    border-color: var(--button-primary);
+    color: var(--text-secondary) !important;
+    border-radius: 10px;
+}
+.rbc-toolbar button:hover{
+    background-color: var(--button-secondary) !important;
+    border-color: var(--button-secondary) !important;
+    border-radius: 10px;
+}
+.rbc-active{
+    background-color: var(--button-secondary) !important;
+    border-color: var(--button-secondary) !important;
+    border-radius: 10px;
+}
+.rbc-toolbar-label, .rbc-header, .rbc-label, .rbc-agenda-view{
+    color: var(--text-secondary) !important;
+    border-color: var(--background-quinary) !important;
+}
+.rbc-off-range-bg{
+    background-color: var(--background-tertiary) !important;
+    border-color: var(--background-quinary) !important;
+}
+.rbc-today{
+    background-color: var(--background-quaternary) !important;
+    border-color: var(--background-quinary) !important;
+}
+.rbc-day-slot, .rbc-time-slot, .rbc-time-content, .rbc-time-view, .rbc-time-header, .rbc-time-content > * + * > *, .rbc-day-bg + .rbc-day-bg, .rbc-time-header-content, .rbc-month-view, .rbc-month-row + .rbc-month-row, .rbc-agenda-view table.rbc-agenda-table{
+    border-color: var(--background-quinary) !important;
+}
+.rbc-timeslot-group{
+    border-bottom: none !important;
+}
+.rbc-current-time-indicator{
+    background-color: var(--button-primary) !important;
+}
