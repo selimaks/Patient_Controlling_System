@@ -33,6 +33,12 @@ export default function Authenticated({
                                 >
                                     Dashboard
                                 </NavLink>
+                                <NavLink
+                                    href={route('appointments')}
+                                    active={route().current('appointments')}
+                                >
+                                    Randevular
+                                </NavLink>
                             </div>
                         </div>
 
@@ -68,6 +74,13 @@ export default function Authenticated({
                                             href={route('profile.edit')}
                                         >
                                             Profile
+                                        </Dropdown.Link>
+                                        <Dropdown.Link
+                                            href={route('appointments')}
+                                            method="post"
+                                            as="button"
+                                        >
+                                            Randevular
                                         </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route('logout')}
@@ -136,6 +149,12 @@ export default function Authenticated({
                             active={route().current('dashboard')}
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('appointments')}
+                            active={route().current('appointments')}
+                        >
+                            Randevular
                         </ResponsiveNavLink>
                     </div>
 
