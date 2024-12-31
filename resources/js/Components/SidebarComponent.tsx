@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { useState } from 'react';
-import { HomeIcon, CalendarIcon, UserIcon, CogIcon } from '@heroicons/react/24/outline'
+import { HomeIcon, CalendarIcon, UserIcon } from '@heroicons/react/24/outline'
 
 export default function Sidebar({user}: { user: { name: string; email: string } }) {
     const [isCollapsed, setIsCollapsed] = useState(false);

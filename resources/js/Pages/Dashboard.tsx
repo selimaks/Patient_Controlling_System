@@ -1,6 +1,5 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
-import {usePage} from "@inertiajs/react";
 import DashboardCard from "@/Components/DashboardCard"; // Oluşturulan bileşeni import ediyoruz
 
 export default function Dashboard({totalPatients, todaysPatients, todaysAppointments, totalAppointments, totalDoctors, completedAppointmentsToday, todaysSchedules, newPatients,}: {
@@ -56,16 +55,16 @@ export default function Dashboard({totalPatients, todaysPatients, todaysAppointm
                                 <table className="min-w-full table-auto bg-white dark:bg-dark-background-secondary">
                                     <thead>
                                     <tr className="bg-gray-200 dark:bg-dark-background-secondary">
-                                        <th className="text-center px-4 py-2 text-left text-gray-600 dark:text-dark-text-primary">
+                                        <th className="text-center px-4 py-2  text-gray-600 dark:text-dark-text-primary">
                                             Hasta Adı
                                         </th>
-                                        <th className="text-center px-4 py-2 text-left text-gray-600 dark:text-dark-text-primary">
+                                        <th className="text-center px-4 py-2  text-gray-600 dark:text-dark-text-primary">
                                             Doktor Adı
                                         </th>
-                                        <th className="text-center px-4 py-2 text-left text-gray-600 dark:text-dark-text-primary">
+                                        <th className="text-center px-4 py-2  text-gray-600 dark:text-dark-text-primary">
                                             Randevu Saati
                                         </th>
-                                        <th className="text-center px-4 py-2 text-left text-gray-600 dark:text-dark-text-primary">
+                                        <th className="text-center px-4 py-2  text-gray-600 dark:text-dark-text-primary">
                                             Yapılacak İşlem
                                         </th>
                                     </tr>
