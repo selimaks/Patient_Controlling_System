@@ -22,7 +22,7 @@ class AppointmentFactory extends Factory
             'patient_id' => Patient::inRandomOrder()->first()?->id ?? Patient::factory(),
             'doctor_name' => $this->faker->name(),
             'created_by' => $this->faker->randomElement(['doctor', 'assistant', 'worker']),
-            'appointment_date' => $this->faker->dateTimeBetween('now', '+1 year'),
+            'appointment_date' => $this->faker->dateTimeBetween('now', '+10 days'),
             'appointment_time' => $this->faker->time(),
             'status' => $this->faker->randomElement(['scheduled', 'completed', 'canceled']),
             'reason' => $this->faker->randomElement(['surgery', 'operation', 'other']),

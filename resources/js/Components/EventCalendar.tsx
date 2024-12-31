@@ -1,6 +1,6 @@
 import { useState, MouseEvent, useEffect } from "react"
 import { usePage } from '@inertiajs/react';
-import { Box, Button, ButtonGroup, Card, CardContent, CardHeader, Container, Divider } from "@mui/material"
+import { Box, Button, ButtonGroup, Card, CardContent, Container, Divider } from "@mui/material"
 import "../../css/app.css"
 
 import { Calendar, type Event, dateFnsLocalizer } from "react-big-calendar"
