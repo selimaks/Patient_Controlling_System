@@ -11,6 +11,7 @@ class Appointment extends Model
     /** @use HasFactory<AppointmentFactory> */
     use HasFactory;
     //
+    protected $table = 'appointments';
     protected $fillable = [
         'reason',
         'notes',

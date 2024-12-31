@@ -19,7 +19,13 @@
 }
 .rbc-btn-group{
     background-color: var(--button-primary) !important;
-    border-color: var(--button-primary);
+    border-color: var(--button-primary) !important;
+    color: var(--text-secondary) !important;
+    border-radius: 10px;
+}
+.MuiButtonGroup-grouped{
+    background-color: var(--button-secondary) !important;
+    border-color: var(--button-primary) !important;
     color: var(--text-secondary) !important;
     border-radius: 10px;
 }

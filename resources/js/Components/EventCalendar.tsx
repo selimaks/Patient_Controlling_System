@@ -216,7 +216,7 @@ const EventCalendar = () => {
               startAccessor="start"
               components={{ event: EventInfo }}
               endAccessor="end"
-              defaultView="week"
+              defaultView="month"
               culture="tr"
               eventPropGetter={(event) => {
                 const hasTodo = todos.find((todo) => todo._id === event.todoId)
