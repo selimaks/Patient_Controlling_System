@@ -1,4 +1,5 @@
-import { useState, MouseEvent } from "react"
+import { useState, MouseEvent, useEffect } from "react"
+import { usePage } from '@inertiajs/react';
 import { Box, Button, ButtonGroup, Card, CardContent, CardHeader, Container, Divider } from "@mui/material"
 import "../../css/app.css"
 
@@ -38,17 +39,29 @@ export interface ITodo {
 
 export interface IEventInfo extends Event {
   _id: string
+    patient_name: string
+    doctor_name: string
+    status: string
+    notes: string
   description: string
   todoId?: string
 }
 
 export interface EventFormData {
+    patient_name: string
   description: string
+    doctor_name: string
+    status: string
+    notes: string
   todoId?: string
 }
 
 export interface DatePickerEventFormData {
+    patient_name: string
   description: string
+    doctor_name: string
+    status: string
+    notes: string
   todoId?: string
   allDay: boolean
   start?: Date
@@ -58,12 +71,20 @@ export interface DatePickerEventFormData {
 export const generateId = () => (Math.floor(Math.random() * 10000) + 1).toString()
 
 const initialEventFormState: EventFormData = {
-  description: "",
-  todoId: undefined,
+    patient_name: "", // Doğru isimlendirme
+    description: "",
+    doctor_name: "",
+    status: "",
+    notes: "",
+    todoId: undefined,
 }
 
 const initialDatePickerEventFormData: DatePickerEventFormData = {
+    patient_name: "",
   description: "",
+    doctor_name: "",
+    status: "",
+    notes: "",
   todoId: undefined,
   allDay: false,
   start: undefined,
@@ -71,6 +92,8 @@ const initialDatePickerEventFormData: DatePickerEventFormData = {
 }
 
 const EventCalendar = () => {
+
+    const appointments  = usePage().props.appointments as any;
   const [openSlot, setOpenSlot] = useState(false)
   const [openDatepickerModal, setOpenDatepickerModal] = useState(false)
   const [openTodoModal, setOpenTodoModal] = useState(false)
@@ -116,11 +139,28 @@ const EventCalendar = () => {
       end: currentEvent?.end,
     }
 
-    const newEvents = [...events, data]
+    const newEvents = [...events, data] //Burda yeni event ekleniyor.
 
     setEvents(newEvents)
     handleClose()
   }
+
+    useEffect(() => {
+        if (appointments) {
+            // Veriyi dönüştürerek takvim formatına uyarlıyoruz
+            const appointmentEvents = appointments.map((appointment: any) => ({
+                _id: appointment.id.toString(), // Takvim için benzersiz ID
+                title: `Randevu - ${appointment.patient_id}`, // Başlık
+                description: `${appointment.notes}`, // Açıklama
+                doctor_name: `${appointment.doctor_name}`,
+                patient_name: `${appointment.patient_name}`,
+                start: new Date(`${appointment.appointment_date}T${appointment.appointment_time}`), // Başlangıç zamanı
+                end: new Date(new Date(`${appointment.appointment_date}T${appointment.appointment_time}`).getTime() + 60 * 60 * 1000), // Bitiş zamanı (örnek olarak aynı zamanda)
+                todoId: undefined, // Opsiyonel todoId
+            }));
+            setEvents(appointmentEvents); // Çevrilen veriyi takvime ekliyoruz
+        }
+    }, [appointments]);
 
   const onAddEventFromDatePicker = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()

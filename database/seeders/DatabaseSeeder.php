@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        User::factory(25)->create([]);
+        User::factory(5)->create([]);
 
         $this->call(PatientSeeder::class);
 

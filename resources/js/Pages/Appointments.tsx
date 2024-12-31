@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head , usePage } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 import EventCalendar from "@/Components/EventCalendar";
 
 
@@ -16,7 +16,6 @@ interface Appointment {
     notes: string;
 }
 export default function Appointments() {
-    const appointments = usePage().props.appointments as Appointment[];
     return (
         <AuthenticatedLayout
             header={

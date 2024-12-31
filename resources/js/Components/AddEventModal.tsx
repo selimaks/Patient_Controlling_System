@@ -22,7 +22,7 @@ interface IProps {
 }
 
 const AddEventModal = ({ open, handleClose, eventFormData, setEventFormData, onAddEvent, todos }: IProps) => {
-  const { description } = eventFormData
+  const { patient_name } = eventFormData
 
   const onClose = () => handleClose()
 
@@ -47,10 +47,10 @@ const AddEventModal = ({ open, handleClose, eventFormData, setEventFormData, onA
         <DialogContentText>Bilgileri doldurun</DialogContentText>
         <Box component="form">
             <TextField
-                name="description"
-                value={description}
+                name="patient_name"
+                value={patient_name}
                 margin="dense"
-                id="description"
+                id="patient_name"
                 label="Hasta Adı"
                 type="text"
                 fullWidth
@@ -72,7 +72,7 @@ const AddEventModal = ({ open, handleClose, eventFormData, setEventFormData, onA
         <Button color="error" onClick={onClose}>
           İptal
         </Button>
-        <Button disabled={description === ""} color="success" onClick={onAddEvent}>
+        <Button disabled={patient_name === ""} color="success" onClick={onAddEvent}>
           Ekle
         </Button>
       </DialogActions>

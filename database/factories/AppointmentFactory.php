@@ -20,7 +20,7 @@ class AppointmentFactory extends Factory
     {
         return [
             'patient_id' => Patient::inRandomOrder()->first()?->id ?? Patient::factory(),
-            'doctor_id' => $this->faker->numerify('##########'),
+            'doctor_name' => $this->faker->name(),
             'created_by' => $this->faker->randomElement(['doctor', 'assistant', 'worker']),
             'appointment_date' => $this->faker->dateTimeBetween('now', '+1 year'),
             'appointment_time' => $this->faker->time(),

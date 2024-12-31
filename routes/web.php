@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Appointment;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -18,9 +19,7 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/appointments', function () {
-    return Inertia::render('Appointments');
-})->middleware(['auth', 'verified'])->name('appointments');
+Route::get('/appointments', [Appointment::class, 'index'])->middleware(['auth', 'verified'])->name('appointments');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -16,11 +16,17 @@ const EventInfoModal = ({ open, handleClose, onDeleteEvent, currentEvent }: IPro
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Randevu Bilgileri</DialogTitle>
+      <DialogTitle>Hasta Adı: {currentEvent?.patient_name}</DialogTitle>
       <DialogContent>
         <DialogContentText>
+          <Typography sx={{ fontSize: 16, marginTop: 3 }} color="text.primary" gutterBottom>
+             Doktor: {currentEvent?.doctor_name}
+          </Typography>
           <Typography sx={{ fontSize: 14, marginTop: 3 }} color="text.secondary" gutterBottom>
-            {currentEvent?.description}
+            Yapılacak İşlem: {currentEvent?.description}
+          </Typography>
+            <Typography sx={{ fontSize: 14, marginTop: 1 }} color="text.secondary" gutterBottom>
+            Not: {currentEvent?.todoId}
           </Typography>
         </DialogContentText>
         <Box component="form"></Box>

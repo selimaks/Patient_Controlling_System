@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class Patient extends Authenticatable
+class Patient extends Model
 {
     /** @use HasFactory<\Database\Factories\PatientFactory> */
     use HasFactory, Notifiable;
@@ -42,8 +42,7 @@ class Patient extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-            'TCKN' => 'hashed'
+            'password' => 'hashed'
         ];
     }
 }

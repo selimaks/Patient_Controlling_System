@@ -8,7 +8,7 @@ interface IProps {
 const EventInfo = ({ event }: IProps) => {
   return (
     <>
-      <Typography>{event.description}</Typography>
+      <Typography>{event.patient_name}</Typography>
     </>
   )
 }

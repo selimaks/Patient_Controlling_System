@@ -22,9 +22,9 @@ class PatientFactory extends Factory
         $tcknRaw = $this->faker->numerify('###########');
         return [
             'name' => fake()->name(),
+            'doctor' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'TCKN' => Hash::make($tcknRaw),
-            'tcknRaw' => $tcknRaw, /* Hash durumu kontrol edilecek!!! */
+            'TCKN' => $tcknRaw,
             'phone_number' => fake()->phoneNumber(),
             'gender' => fake()->randomElement(['male', 'female']),
             'email_verified_at' => now(),
