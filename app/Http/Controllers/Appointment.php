@@ -22,12 +22,11 @@ class Appointment extends Controller
                 'appointments.reason',
                 'appointments.notes',
 
-                'patients.name as patient_name', // Hastanın adı
+                'patients.name as patient_name',
                 'patients.phone_number as patient_phone',
             )
             ->get();
 
-        // Veriyi bir React bileşenine render ediyoruz
         return Inertia::render('Appointments', [
             'appointments' => $appointments,
         ]);

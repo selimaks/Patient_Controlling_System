@@ -34,6 +34,7 @@
         "@types/react-big-calendar": "^1.16.0",
         "date-fns": "^2.30.0",
         "react-big-calendar": "^1.8.2",
-        "react-colorful": "^5.6.1"
+        "react-colorful": "^5.6.1",
+        "react-toastify": "^11.0.2"
     }
 }

@@ -6,7 +6,6 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
 import '../../css/app.css'
-
 export default function Authenticated({
     header,
     children,
@@ -45,6 +44,12 @@ export default function Authenticated({
                                         active={route().current('appointments')}
                                     >
                                         Randevular
+                                    </NavLink>
+                                    <NavLink
+                                        href={route('patients')}
+                                        active={route().current('patients')}
+                                    >
+                                        Hastalar
                                     </NavLink>
                                 </div>
                             </div>
@@ -87,6 +92,12 @@ export default function Authenticated({
                                                 as="button"
                                             >
                                                 Randevular
+                                            </Dropdown.Link>
+                                            <Dropdown.Link
+                                                href={route('patients')}
+                                                as="button"
+                                            >
+                                                Hastalar
                                             </Dropdown.Link>
                                             <Dropdown.Link
                                                 href={route('logout')}
@@ -161,6 +172,12 @@ export default function Authenticated({
                                 active={route().current('appointments')}
                             >
                                 Randevular
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink
+                                href={route('patients')}
+                                active={route().current('patients')}
+                            >
+                                Hastalar
                             </ResponsiveNavLink>
                         </div>
 

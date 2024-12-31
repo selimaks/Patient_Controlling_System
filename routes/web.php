@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Appointment;
 use App\Http\Controllers\Dashboard;
+use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -15,10 +16,16 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [Dashboard::class, 'dashboard'])->name('dashboard');
 
-Route::get('/dashboard', [Dashboard::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/appointments', [Appointment::class, 'index'])->name('appointments');
 
-Route::get('/appointments', [Appointment::class, 'index'])->middleware(['auth', 'verified'])->name('appointments');
+    Route::get('/patients', [PatientController::class, 'index'])->name('patients');
+    Route::put('/patients/{id}', [PatientController::class, 'update'])->name('patients.update');
+});
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

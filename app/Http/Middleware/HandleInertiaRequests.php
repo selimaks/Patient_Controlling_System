@@ -39,6 +39,10 @@ class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
+            'flash' => [
+                // in your case, you named your flash message "success"
+                'message' => fn () => $request->session()->get('message')
+            ],
         ];
     }
 }
