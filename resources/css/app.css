@@ -14,6 +14,37 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Scrollbarın genel görünümünü düzenle */
+::-webkit-scrollbar {
+    width: 3px; /* Dikey kaydırma genişliği */
+    height: 3px; /* Yatay kaydırma yüksekliği */
+}
+
+/* Scrollbar track (arkaplan) */
+::-webkit-scrollbar-track {
+    background: #e4e4e4; /* Arkaplan rengi */
+    border-radius: 10px; /* Köşeleri yuvarlak */
+}
+
+/* Scrollbar thumb (hareketli kısım) */
+::-webkit-scrollbar-thumb {
+    background: #3d3f5c; /* Kaydırıcı rengi */
+    border-radius: 10px; /* Köşeleri yuvarlak */
+    border: 2px solid transparent; /* Boşluk ve tasarım için çerçeve */
+    background-clip: padding-box; /* Çerçeve ve arkaplan uyumu */
+}
+
+/* Scrollbar hover durumu */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Hover sırasında daha koyu renk */
+}
+
+/* Firefox için scrollbar */
+* {
+    scrollbar-width: none; /* İnce kaydırma çubuğu */
+    scrollbar-color: #888 #3d3f5c; /* thumb ve track renkleri */
+}
+
 .MuiCardContent-root{
     background-color: var(--background-secondary);
 }

@@ -17,7 +17,10 @@ export default function Dashboard({totalPatients, todaysPatients, todaysAppointm
     }[];
     newPatients: { name: string; doctor: string; }[];
 }) {
-    console.log(todaysSchedules);
+    const sortedSchedules = [...todaysSchedules].sort((a, b) =>
+        a.appointment_time.localeCompare(b.appointment_time)
+    );
+    console.log(sortedSchedules);
     return (
         <AuthenticatedLayout
             header={
@@ -70,7 +73,7 @@ export default function Dashboard({totalPatients, todaysPatients, todaysAppointm
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {todaysSchedules.map((schedule, index) => (
+                                    {sortedSchedules.map((schedule, index) => (
                                         <tr
                                             key={index}
                                             className="odd:bg-white even:bg-gray-100 dark:odd:bg-dark-background-secondary dark:even:bg-dark-background-tertiary"

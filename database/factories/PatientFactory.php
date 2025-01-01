@@ -22,6 +22,7 @@ class PatientFactory extends Factory
         $tcknRaw = $this->faker->numerify('###########');
         return [
             'name' => fake()->name(),
+            'isDeleted' => fake()->randomElement(['0', '1']),
             'doctor' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'TCKN' => $tcknRaw,

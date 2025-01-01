@@ -21,6 +21,7 @@ class Patient extends Model
         'email',
         'password',
         'phone_number',
+        'TCKN'
     ];
 
     /**

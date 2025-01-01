@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->boolean('isDeleted')->default(false);
             $table->string('created_by')->default('system');
             $table->string('name', 50);
             $table->string('TCKN')->unique();
