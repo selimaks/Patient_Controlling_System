@@ -2,7 +2,6 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-{/*import Sidebar from '@/Components/SidebarComponent';*/}
 import { Link, usePage } from '@inertiajs/react';
 import { PropsWithChildren, ReactNode, useState } from 'react';
 import '../../css/app.css'
@@ -18,8 +17,6 @@ export default function Authenticated({
     return (
 
         <div className="min-h-screen bg-background dark:bg-dark-background">
-            {/*<Sidebar user={user}/>
-                <div className="flex-1 flex flex-col"> //Unused Sidebar (add flex to parent) </div> */}
             <nav
                 className="border-b border-gray-100 bg-background-secondary dark:border-gray-700 dark:bg-dark-background-secondary">
                     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">

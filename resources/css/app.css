@@ -9,7 +9,9 @@
     --button-primary: #d95b46;
     --button-secondary: #f8b87c;
 }
-
+.patients {
+    overflow-y: hidden;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

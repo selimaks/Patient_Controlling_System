@@ -94,6 +94,7 @@ const initialDatePickerEventFormData: DatePickerEventFormData = {
 const EventCalendar = () => {
 
     const appointments  = usePage().props.appointments as any;
+    console.log(appointments);
   const [openSlot, setOpenSlot] = useState(false)
   const [openDatepickerModal, setOpenDatepickerModal] = useState(false)
   const [openTodoModal, setOpenTodoModal] = useState(false)
