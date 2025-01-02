@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('patient_id');
             $table->string('doctor_name');
             $table->enum('status', ['scheduled', 'completed', 'canceled']);
-            $table->string('reason');
+            $table->string('operation')->default('not_specified');
             $table->string('notes')->nullable();
         });
     }

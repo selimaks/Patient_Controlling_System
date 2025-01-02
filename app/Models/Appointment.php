@@ -13,7 +13,13 @@ class Appointment extends Model
     //
     protected $table = 'appointments';
     protected $fillable = [
-        'reason',
+        'created_by',
+        'appointment_date',
+        'appointment_time',
+        'status',
+        'doctor_name',
+        'patient_id',
+        'operation',
         'notes',
     ];
     public function patient()

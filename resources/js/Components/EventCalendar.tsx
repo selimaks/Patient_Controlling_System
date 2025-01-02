@@ -43,6 +43,7 @@ export interface IEventInfo extends Event {
     doctor_name: string
     status: string
     notes: string
+    operation: string
   description: string
   todoId?: string
 }
@@ -53,6 +54,7 @@ export interface EventFormData {
     doctor_name: string
     status: string
     notes: string
+    operation: string
   todoId?: string
 }
 
@@ -62,6 +64,7 @@ export interface DatePickerEventFormData {
     doctor_name: string
     status: string
     notes: string
+    operation: string
   todoId?: string
   allDay: boolean
   start?: Date
@@ -76,6 +79,7 @@ const initialEventFormState: EventFormData = {
     doctor_name: "",
     status: "",
     notes: "",
+    operation: "",
     todoId: undefined,
 }
 
@@ -85,6 +89,7 @@ const initialDatePickerEventFormData: DatePickerEventFormData = {
     doctor_name: "",
     status: "",
     notes: "",
+    operation: "",
   todoId: undefined,
   allDay: false,
   start: undefined,
@@ -152,7 +157,8 @@ const EventCalendar = () => {
             const appointmentEvents = appointments.map((appointment: any) => ({
                 _id: appointment.id.toString(), // Takvim için benzersiz ID
                 title: `Randevu - ${appointment.patient_id}`, // Başlık
-                description: `${appointment.notes}`, // Açıklama
+                operation: `${appointment.operation}`, // Açıklama
+                notes: `${appointment.notes}`,
                 doctor_name: `${appointment.doctor_name}`,
                 patient_name: `${appointment.patient_name}`,
                 start: new Date(`${appointment.appointment_date}T${appointment.appointment_time}`), // Başlangıç zamanı

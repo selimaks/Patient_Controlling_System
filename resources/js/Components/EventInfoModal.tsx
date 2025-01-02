@@ -23,10 +23,10 @@ const EventInfoModal = ({ open, handleClose, onDeleteEvent, currentEvent }: IPro
              Doktor: {currentEvent?.doctor_name}
           </Typography>
           <Typography sx={{ fontSize: 14, marginTop: 3 }} color="text.secondary" gutterBottom>
-            Yapılacak İşlem: {currentEvent?.description}
+            Yapılacak İşlem: {currentEvent?.operation}
           </Typography>
             <Typography sx={{ fontSize: 14, marginTop: 1 }} color="text.secondary" gutterBottom>
-            Not: {currentEvent?.todoId}
+            Not: {currentEvent?.notes}
           </Typography>
         </DialogContentText>
         <Box component="form"></Box>

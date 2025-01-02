@@ -1,6 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage, router } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
+import AppointmentModal from '../Components/AppointmentModal'; //
+
+//--Veritabanından gelen hasta bilgileri tanımı başlangıcı--
 interface Patient {
     id: number;
     isDeleted: boolean;
@@ -13,7 +16,14 @@ interface Patient {
     created_at: string;
     created_by: string;
 }
+//--Veritabanından gelen hasta bilgileri tanımı bitişi--
+
 export default function Patients() {
+
+    const user = usePage().props.auth.user;
+    const { patients } = usePage().props;
+
+    //--Patients sayfasına özel kaydırma işlemini devre dışı bırakma başlangıcı--
     useEffect(() => {
         // Tüm sayfa kaydırmasını devre dışı bırak
         document.body.style.overflow = 'hidden';
@@ -23,15 +33,13 @@ export default function Patients() {
             document.body.style.overflow = 'auto';
         };
     }, []);
+    //--Patients sayfasına özel kaydırma işlemini devre dışı bırakma bitişi--
 
-    const { patients } = usePage().props;
-    const user = usePage().props.auth.user;
+
+    //--Hasta Ekleme/Güncelleme Başlangıcı--
     const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
     const [originalPatient, setOriginalPatient] = useState<Patient | null>(null);
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
-    const [isDeleteDisabled, setIsDeleteDisabled] = useState(false);
-
-    // **Yeni Hasta Ekleme:**
     const handleAddPatient = () => {
         // Yeni boş hasta oluştur
         const newPatient: Patient = {
@@ -49,31 +57,19 @@ export default function Patients() {
         setSelectedPatient(newPatient); // Sağ tarafı yeni hasta bilgileriyle doldurun
         setOriginalPatient(newPatient); // Orijinal durumu da aynı yapın
     };
-
-    useEffect(() => {
-        if (originalPatient && selectedPatient) {
-            const isSame =
-                JSON.stringify(originalPatient) === JSON.stringify(selectedPatient);
-            setIsSaveDisabled(isSame); // Eğer bilgiler aynıysa butonu devre dışı yap
-        }
-    }, [originalPatient, selectedPatient]);
-
-    useEffect(() => {
-        // Eğer bir hasta seçilmemişse veya yeni bir hasta ekleniyorsa, silme butonu devre dışı olmalı
-        if (!selectedPatient || selectedPatient.id === 0) {
-            setIsDeleteDisabled(true);
-        } else {
-            setIsDeleteDisabled(false);
-        }
-    }, [selectedPatient]);
-
     const handleSelect = (id: number) => {
         const patient = (patients as Patient[]).find((p: Patient) => p.id === id); // Seçilen hastayı bul
         setSelectedPatient(patient ?? null); // Sağdaki detay alanına göndermek için durumu ayarla
         setOriginalPatient(patient ?? null); // Hasta seçildiğinde orijinal bilgiyi sakla
     };
+    useEffect(() => {
+        if (originalPatient && selectedPatient) {
+            const isSame =
+                JSON.stringify(originalPatient) === JSON.stringify(selectedPatient);
+            setIsSaveDisabled(isSame);
+        }
+    }, [originalPatient, selectedPatient]);
     const handleSave = () => {
-
         if (selectedPatient) {
             if (selectedPatient.id === 0) {
                 // Yeni hasta oluşturulacaksa POST isteği
@@ -101,7 +97,17 @@ export default function Patients() {
             setSelectedPatient({ ...selectedPatient, [field]: value } as Patient); // State'i güncelle
         }
     };
+    //--Hasta Ekleme/Güncelleme Bitişi--
 
+    //--Silme İşlemi başlangıcı--
+    const [isDeleteDisabled, setIsDeleteDisabled] = useState(false);
+    useEffect(() => {
+        if (!selectedPatient || selectedPatient.id === 0) {
+            setIsDeleteDisabled(true);
+        } else {
+            setIsDeleteDisabled(false);
+        }
+    }, [selectedPatient]);
     const handleDelete = () => {
         if (selectedPatient) {
             if (selectedPatient.id != 0) {
@@ -122,6 +128,83 @@ export default function Patients() {
             }
         }
     };
+    //--Silme işlemi bitişi--
+
+    //--Hasta Kayıt İptal İşlemi Başlangıcı--
+    const setSelectedPatientToNull = () => {
+        setSelectedPatient(null);
+    }
+    //--Hasta Kayıt İptal İşlemi Bitişi--
+
+    //--Randevu oluşturma başlangıcı--
+    // Modal görünürlük durumu
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [appointmentDetails, setAppointmentDetails] = useState({
+        patient_id: '',
+        appointment_date: '',
+        appointment_time: '',
+        doctor_name: '',
+        operation: '',
+        notes: '',
+        created_at: new Date().toISOString(),
+        created_by: user.name,
+        status: '',
+    });
+    // Modal'ı aç/kapat
+    const handleModalToggle = () => {
+        setIsModalOpen(!isModalOpen);
+        setAppointmentDetails({
+            patient_id: selectedPatient?.TCKN ?? '',
+            appointment_date: '',
+            appointment_time: '',
+            doctor_name: selectedPatient?.doctor.toString() ?? '',
+            operation: '',
+            notes: '',
+            created_at: new Date().toISOString(),
+            created_by: user.name,
+            status: 'scheduled',
+        });
+    };
+    const handleAppointmentChange = (field: string, value: string) => {
+        setAppointmentDetails({
+            ...appointmentDetails,
+            [field]: value,
+        });
+    };
+    const handleCreateAppointment = () => {
+        // Randevu oluşturma işlemi burada yapılacaktır
+        console.log(selectedPatient);
+        console.log(appointmentDetails);
+        router.post('/appointments/create', {...appointmentDetails}, {
+                onSuccess: () => {
+                    console.log('Randevu Oluşturuldu:', appointmentDetails);
+                    setAppointmentDetails({
+                            patient_id: '',
+                            appointment_date: '',
+                            appointment_time: '',
+                            doctor_name: selectedPatient?.doctor.toString() ?? '',
+                            operation: '',
+                            notes: '',
+                            created_at: new Date().toISOString(),
+                            created_by: user.name,
+                            status: '',
+                        }
+                    )
+
+                },
+                onError: () => {
+                    console.log('Randevu Oluşturulamadı');
+                }
+        });
+
+        // Backend çağrısı (örneğin, POST isteği)
+        // router.post('/appointments/create', { ...appointmentDetails });
+
+        // Modalı kapat
+        handleModalToggle();
+    };
+    //--Randevu Oluşturma bitişi--
+
     // @ts-ignore
     return (
         <div className="patients">
@@ -265,19 +348,34 @@ export default function Patients() {
                                         disabled={isSaveDisabled} // Eğer bilgiler değişmediyse devre dışı bırak
                                         className={`px-4 py-2 rounded-lg transition-all duration-200 ${
                                             isSaveDisabled
-                                                ? 'bg-gray-400 cursor-not-allowed'
+                                                ? 'bg-gray-400 text-text-primary cursor-not-allowed'
                                                 : 'bg-dark-button-primary hover:bg-dark-button-secondary text-text-primary'
                                         }`}
                                     >
-                                        Kaydet
+                                        {isDeleteDisabled ? 'Kaydet' : 'Güncelle'}
                                     </button>
-                                    {!isDeleteDisabled && (
+                                    {isDeleteDisabled ? (
                                         <button
-                                            onClick={handleDelete}
+                                            onClick={setSelectedPatientToNull}
                                             className="px-4 py-2 bg-button-secondary text-text-primary rounded-lg hover:bg-button-primary transition-all duration-200"
                                         >
-                                            Sil
+                                            İptal
                                         </button>
+                                    ) : (
+                                        <>
+                                            <button
+                                                onClick={handleModalToggle}
+                                                className="px-4 py-2 bg-background-quaternary text-text-primary rounded-lg hover:bg-background-quinary transition-all duration-200"
+                                            >
+                                                Randevu Oluştur
+                                            </button>
+                                            <button
+                                                onClick={handleDelete}
+                                                className="px-4 py-2 bg-button-secondary text-text-primary rounded-lg hover:bg-button-primary transition-all duration-200"
+                                            >
+                                                Sil
+                                            </button>
+                                        </>
                                     )}
                                 </div>
                             </div>
@@ -288,6 +386,15 @@ export default function Patients() {
                         )}
                     </div>
                 </div>
+                {/* Modal */}
+                <AppointmentModal
+                    open={isModalOpen}
+                    onClose={handleModalToggle}
+                    appointmentDetails={appointmentDetails}
+                    selectedPatientName={selectedPatient?.name || 'Hata - Sayfayı Yenileyin!'}
+                    onAppointmentChange={handleAppointmentChange}
+                    onCreateAppointment={handleCreateAppointment}
+                />
             </AuthenticatedLayout>
         </div>
     );

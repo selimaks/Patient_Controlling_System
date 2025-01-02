@@ -25,7 +25,7 @@ class AppointmentFactory extends Factory
             'appointment_date' => $this->faker->dateTimeBetween('now', '+10 days'),
             'appointment_time' => $this->faker->time(),
             'status' => $this->faker->randomElement(['scheduled', 'completed', 'canceled']),
-            'reason' => $this->faker->randomElement(['surgery', 'operation', 'other']),
+            'operation' => $this->faker->randomElement(['surgery', 'operation','not_specified' , 'other']),
             'notes' => $this->faker->optional()->text(200),
             'created_at' => now(),
             'updated_at' => now(),

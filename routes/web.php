@@ -20,6 +20,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [Dashboard::class, 'dashboard'])->name('dashboard');
 
     Route::get('/appointments', [Appointment::class, 'index'])->name('appointments');
+    Route::post('/appointments/create', [Appointment::class, 'create'])->name('appointments.create');
 
     Route::get('/patients', [PatientController::class, 'index'])->name('patients');
     Route::put('/patients/update/{id}', [PatientController::class, 'update'])->name('patients.update');

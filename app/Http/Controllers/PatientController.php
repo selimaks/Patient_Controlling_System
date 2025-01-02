@@ -46,6 +46,7 @@ class PatientController extends Controller
                     'phone_number' => $validatedData['phone_number'] ?? null,
                     'created_by' => $validatedData['created_by'] ?? null,
                     'updated_at' => now(),
+                    'isDeleted' => "0",
                 ],
                 // created_at yalnızca yeni kayıt ekleniyorsa eklenir
                 DB::table('patients')->where('TCKN', $validatedData['TCKN'])->exists()
