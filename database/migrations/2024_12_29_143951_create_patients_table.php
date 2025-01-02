@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('doctor')->nullable();
             $table->string('phone_number', 20)->unique();
             $table->string('gender')->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
         });

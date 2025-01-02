@@ -2,6 +2,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage, router } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import AppointmentModal from '../Components/AppointmentModal'; //
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 //--Veritabanından gelen hasta bilgileri tanımı başlangıcı--
 interface Patient {
@@ -16,12 +18,16 @@ interface Patient {
     created_at: string;
     created_by: string;
 }
-//--Veritabanından gelen hasta bilgileri tanımı bitişi--
+
+interface Doctor {
+    name: string;
+}
+//--Veritabanından gelen hasta ve doktor bilgileri tanımı bitişi--
 
 export default function Patients() {
 
     const user = usePage().props.auth.user;
-    const { patients } = usePage().props;
+    const { patients, doctors } = usePage().props;
 
     //--Patients sayfasına özel kaydırma işlemini devre dışı bırakma başlangıcı--
     useEffect(() => {
@@ -66,7 +72,7 @@ export default function Patients() {
         if (originalPatient && selectedPatient) {
             const isSame =
                 JSON.stringify(originalPatient) === JSON.stringify(selectedPatient);
-            setIsSaveDisabled(isSame);
+            setIsSaveDisabled(isSame || !validateTCKN(selectedPatient.TCKN) || !isPhoneNumberValid(selectedPatient.phone_number)|| !isValidEmail(selectedPatient.email));
         }
     }, [originalPatient, selectedPatient]);
     const handleSave = () => {
@@ -74,19 +80,29 @@ export default function Patients() {
             if (selectedPatient.id === 0) {
                 // Yeni hasta oluşturulacaksa POST isteği
                 router.post('/patients/create', { ...selectedPatient }, {
-                    onSuccess: () => {
+                    onSuccess: (page: any) => {
+                        const successMessage = page.props.flash?.message || "Hasta başarıyla eklendi!";
+                        toast.success(successMessage);
                         console.log("Yeni Hasta Eklendi: ", selectedPatient.name);
                     },
-                    onError: () => {
+                    onError: (errors: any) => {
+                        const errorMessage = errors?.message || "Hata: Bu TC kimlik numarasına kayıtlı hasta bulunuyor!";
+                        toast.error(errorMessage);
                         console.log("Hasta Eklenemedi: ", selectedPatient.name);
                     }
                 });
             } else {
                 // Mevcut hasta güncellenecekse PUT isteği
                 router.put(`/patients/update/${selectedPatient.id}`, { ...selectedPatient }, {
-                    onSuccess: () => {
+                    onSuccess: (page: any) => {
+                        const successMessage = page.props.flash?.message || "Hasta başarıyla güncellendi!";
+                        toast.success(successMessage);
                         console.log("Hasta Güncellendi: ", selectedPatient.name);
                         setOriginalPatient(selectedPatient);
+                    },
+                    onError: (errors: any) => {
+                        const errorMessage = errors?.message || "Hata: Güncelleme başarısız!";
+                        toast.error(errorMessage); // Hata mesajı
                     }
                 });
             }
@@ -176,8 +192,10 @@ export default function Patients() {
         console.log(selectedPatient);
         console.log(appointmentDetails);
         router.post('/appointments/create', {...appointmentDetails}, {
-                onSuccess: () => {
+                onSuccess: (page: any) => {
                     console.log('Randevu Oluşturuldu:', appointmentDetails);
+                    const successMessage = page.props.flash?.message || "Randevu Oluşuturuldu";
+                    toast.success(successMessage);
                     setAppointmentDetails({
                             patient_id: '',
                             appointment_date: '',
@@ -192,7 +210,9 @@ export default function Patients() {
                     )
 
                 },
-                onError: () => {
+                onError: (errors: any) => {
+                    const errorMessage = errors?.message || "Hata: Randevu oluşturulamadı!";
+                    toast.error(errorMessage);
                     console.log('Randevu Oluşturulamadı');
                 }
         });
@@ -204,6 +224,75 @@ export default function Patients() {
         handleModalToggle();
     };
     //--Randevu Oluşturma bitişi--
+
+    //--TC Kimlik No Kontrol Başlangıcı--
+    function validateTCKN(tckn: string): boolean {
+        // 11 haneli ve sayısal mı kontrolü
+        if (!/^[1-9][0-9]{10}$/.test(tckn)) {
+            return false;
+        }
+
+        // Rakamları diziye ayır
+        const digits = tckn.split('').map(Number);
+
+        // Tek ve çift hane toplamları
+        const oddSum = digits[0] + digits[2] + digits[4] + digits[6] + digits[8];
+        const evenSum = digits[1] + digits[3] + digits[5] + digits[7];
+
+        // 10. hane kontrolü
+        const tenthDigit = ((oddSum * 7) - evenSum) % 10;
+        if (tenthDigit !== digits[9]) {
+            return false;
+        }
+
+        // 11. hane kontrolü
+        const firstTenSum = digits.slice(0, 10).reduce((sum, digit) => sum + digit, 0);
+        const eleventhDigit = firstTenSum % 10;
+        if (eleventhDigit !== digits[10]) {
+            return false;
+        }
+        return true;
+    }
+    //--TC Kimlik No Kontrol Bitişi--
+
+    //--Telefon numarası kontrol başlangıcı--
+    const formatPhoneNumber = (value: string): string => {
+        // "+90-" kısmını sabit bırak ve yalnızca kullanıcı girişini formatla
+        const numbersOnly = value.replace(/\D/g, '').replace(/^90/, ''); // "+90" kısmını dikkatten çıkar
+        const match = numbersOnly.match(/^(\d{3})(\d{3})(\d{4})$/);
+
+        if (match) {
+            return `+90-${match[1]}-${match[2]}-${match[3]}`;
+        } else if (numbersOnly.length > 7) {
+            return `+90-${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3, 6)}-${numbersOnly.slice(6)}`;
+        } else if (numbersOnly.length > 3) {
+            return `+90-${numbersOnly.slice(0, 3)}-${numbersOnly.slice(3)}`;
+        } else if (numbersOnly.length > 0) {
+            return `+90-${numbersOnly}`;
+        }
+
+        return '+90'; // Kullanıcı boş bıraktıysa sadece "+90" döndür
+    };
+    const isPhoneNumberValid = (phone: string): boolean => {
+        // Telefon numarası "+90-" ile başlamıyor veya toplam uzunluk 16 değilse false
+        return phone.startsWith("+90-") && phone.length === 16;
+    };
+    const handlePhoneNumberChange = (value: string) => {
+        const formattedPhone = formatPhoneNumber(value);
+        // Eğer değer 16 karakteri geçiyorsa işlem yapma
+        if (value.length > 16) return;
+        handleChange("phone_number", formattedPhone);
+    };
+    //--Telefon numarası kontrol bitişi--
+
+    //--E-posta kontrol başlangıcı--
+    const isValidEmail = (email: string): boolean => {
+        // Geçerli e-posta doğrulama regex'i
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!email) {return true}
+        return emailRegex.test(email);
+    };
+    //--E-posta kontrol bitişi--
 
     // @ts-ignore
     return (
@@ -227,6 +316,7 @@ export default function Patients() {
                 }
             >
                  <Head title="Patients"/>
+                <ToastContainer autoClose={3000} position="top-right" />
 
                 {/* İki yan yana sütunlu düzen */}
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 flex h-full py-8">
@@ -296,32 +386,59 @@ export default function Patients() {
                                         <p className=" ml-2  text-sm">E-posta</p>
                                         <input onChange={(e) => handleChange("email", e.target.value)} type={"text"}
                                                value={selectedPatient.email}
-                                               className="w-[60%] px-4 py-2 mt-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 dark:bg-dark-background dark:border-gray-600 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
+                                               className={`w-[60%] px-4 py-2 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2   dark:bg-dark-background  dark:text-gray-200  ${
+                                                   isValidEmail(selectedPatient.email) ? 'border-gray-300 dark:border-gray-600 dark:focus:border-blue-500 focus:border-blue-500 focus:ring-blue-400 dark:focus:ring-blue-500' : 'border-red-500 dark:focus:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                                               }`}></input>
                                     </div>
                                     <div>
                                         <p className=" ml-2 text-sm">Telefon</p>
-                                        <input onChange={(e) => handleChange("phone_number", e.target.value)}
+                                        <input onChange={(e) => handlePhoneNumberChange(e.target.value)}
                                                type={"text"}
-                                               value={selectedPatient.phone_number}
-                                               className="w-[60%] px-4 py-2 mt-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 dark:bg-dark-background dark:border-gray-600 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
+                                               value={selectedPatient.phone_number || "+90-"}
+                                               className={`w-[60%] px-4 py-2 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2   dark:bg-dark-background  dark:text-gray-200  ${
+                                                   isPhoneNumberValid(selectedPatient.phone_number) ? 'border-gray-300 dark:border-gray-600 dark:focus:border-blue-500 focus:border-blue-500 focus:ring-blue-400 dark:focus:ring-blue-500' : 'border-red-500 dark:focus:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                                               }`}></input>
                                     </div>
                                     <div>
                                         <p>T.C. Kimlik No</p>
                                         <input onChange={(e) => handleChange("TCKN", e.target.value)} type={"text"}
                                                value={selectedPatient.TCKN}
-                                               className="w-[60%] px-4 py-2 mt-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 dark:bg-dark-background dark:border-gray-600 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
+                                               className={`w-[60%] px-4 py-2 mt-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2   dark:bg-dark-background  dark:text-gray-200  ${
+                                                   validateTCKN(selectedPatient.TCKN) ? 'border-gray-300 dark:border-gray-600 dark:focus:border-blue-500 focus:border-blue-500 focus:ring-blue-400 dark:focus:ring-blue-500' : 'border-red-500 dark:focus:border-red-500 focus:ring-red-500 dark:focus:ring-red-500'
+                                               }`}></input>
                                     </div>
                                     <div>
                                         <p>Cinsiyet</p>
-                                        <input onChange={(e) => handleChange("gender", e.target.value)} type={"text"}
-                                               value={selectedPatient.gender}
-                                               className="w-[60%] px-4 py-2 mt-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 dark:bg-dark-background dark:border-gray-600 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
+                                        <select
+                                            onChange={(e) => handleChange("gender", e.target.value)} // Seçileni handleChange ile al
+                                            value={selectedPatient.gender}
+                                            className="w-[60%] px-4 py-2 mt-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-dark-background dark:border-gray-600 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        >
+                                            <option value="" disabled>
+                                                Seçiniz
+                                            </option>
+                                            <option value="male">Erkek</option>
+                                            <option value="female">Kadın</option>
+                                            <option value="other">Diğer</option>
+                                        </select>
                                     </div>
+
                                     <div>
                                         <p>Doktor</p>
-                                        <input onChange={(e) => handleChange("doctor", e.target.value)} type={"text"}
-                                               value={selectedPatient.doctor}
-                                               className="w-[60%] px-4 py-2 mt-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-500 dark:bg-dark-background dark:border-gray-600 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"></input>
+                                        <select
+                                            onChange={(e) => handleChange("doctor", e.target.value)} // Seçilen doktoru handleChange ile al
+                                            value={selectedPatient.doctor}
+                                            className="w-[60%] px-4 py-2 mt-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-dark-background dark:border-gray-600 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        >
+                                            <option value="" disabled>
+                                                Doktor Seçiniz
+                                            </option>
+                                            {(doctors as Doctor[]).map((doctor, index) => (
+                                                <option key={index} value={doctor.name}>
+                                                    {doctor.name}
+                                                </option>
+                                            ))}
+                                        </select>
                                     </div>
                                     <div className="grid grid-cols-2">
                                         <p className=" text-sm">Kayıt

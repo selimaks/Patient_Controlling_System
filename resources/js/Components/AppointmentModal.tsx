@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import {usePage} from '@inertiajs/react'
 
 interface AppointmentModalProps {
     open: boolean;
@@ -18,6 +19,9 @@ interface AppointmentModalProps {
     onAppointmentChange: (field: string, value: string) => void;
     onCreateAppointment: () => void;
 }
+interface Doctor {
+    name: string;
+}
 
 const AppointmentModal: React.FC<AppointmentModalProps> = ({
     open,
@@ -27,6 +31,7 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
     onAppointmentChange,
     onCreateAppointment,
 }) => {
+    const {doctors} = usePage().props;
     return (
         <Modal open={open} onClose={onClose}>
             <Box
@@ -60,20 +65,28 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             value={appointmentDetails.appointment_time}
                             onChange={(e) => {
-                                const timeWithoutSeconds = e.target.value;
-                                const timeWithSeconds = timeWithoutSeconds + ':00'; // Saniye ekle ':00'
-                                onAppointmentChange('appointment_time', timeWithSeconds);
+                                onAppointmentChange('appointment_time', e.target.value + ':00');
                             }}
                         />
                     </div>
                     <div>
                         <label className="block text-sm font-medium">Doktor</label>
-                        <input
-                            type="text"
-                            className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            value={appointmentDetails.doctor_name}
-                            onChange={(e) => onAppointmentChange('doctor_name', e.target.value)}
-                        />
+                        <div>
+                            <select
+                                onChange={(e) => onAppointmentChange('doctor_name', e.target.value)}
+                                value={appointmentDetails.doctor_name}
+                                className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            >
+                                <option value="" disabled>
+                                    Doktor Seçiniz
+                                </option>
+                                {(doctors as Doctor[]).map((doctor, index) => (
+                                    <option key={index} value={doctor.name}>
+                                        {doctor.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </div>
                     <div>
                         <label className="block text-sm font-medium">Operasyon</label>

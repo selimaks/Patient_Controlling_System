@@ -18,6 +18,17 @@ class HandleInertiaRequests extends Middleware
     /**
      * Determine the current asset version.
      */
+    public function render($request, Throwable $e)
+    {
+        // Eğer bu bir Inertia.js isteğiyse ve hata varsa
+        if ($request->wantsJson() || $request->header('X-Inertia')) {
+            return response()->json([
+                'errors' => $e instanceof ValidationException ? $e->errors() : ['message' => $e->getMessage()],
+            ], 400);
+        }
+
+        return parent::render($request, $e); // Standart davranış
+    }
     public function version(Request $request): ?string
     {
         return parent::version($request);
