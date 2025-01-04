@@ -38,7 +38,7 @@ interface Doctor {
 }
 //--Veritabanından gelen hasta ve doktor bilgileri tanımı bitişi--
 
-export default function Patients(appointments: Appointment[] | null = null) {
+export default function Patients() {
 
     const user = usePage().props.auth.user;
     const { patients, doctors } = usePage().props;
@@ -261,10 +261,8 @@ export default function Patients(appointments: Appointment[] | null = null) {
         // 11. hane kontrolü
         const firstTenSum = digits.slice(0, 10).reduce((sum, digit) => sum + digit, 0);
         const eleventhDigit = firstTenSum % 10;
-        if (eleventhDigit !== digits[10]) {
-            return false;
-        }
-        return true;
+        return eleventhDigit === digits[10];
+
     }
     //--TC Kimlik No Kontrol Bitişi--
 
@@ -505,7 +503,7 @@ export default function Patients(appointments: Appointment[] | null = null) {
                                             </>
                                         )}
                                     </div>
-                                    {isDeleteDisabled === false && (
+                                    {!isDeleteDisabled && (
                                         <div className="flex space-x-4 pt-4">
                                             <button
                                                 onClick={() => fetchAppointments(selectedPatient.TCKN)}
