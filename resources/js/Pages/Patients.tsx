@@ -1,9 +1,11 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, usePage, router } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
-import AppointmentModal from '../Components/AppointmentModal'; //
+import AppointmentModal from '../Components/AppointmentModal';
+import AppointmentListModal from "@/Components/AppointmentListModal";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from "axios";
 
 //--Veritabanından gelen hasta bilgileri tanımı başlangıcı--
 interface Patient {
@@ -19,37 +21,65 @@ interface Patient {
     created_by: string;
 }
 
+interface Appointment {
+    patient_id: string;
+    appointment_date: string;
+    appointment_time: string;
+    doctor_name: string;
+    created_at: string;
+    created_by: string;
+    status: string;
+    operation: string;
+    notes: string;
+}
+
 interface Doctor {
     name: string;
 }
 //--Veritabanından gelen hasta ve doktor bilgileri tanımı bitişi--
 
-export default function Patients() {
+export default function Patients(appointments: Appointment[] | null = null) {
 
     const user = usePage().props.auth.user;
     const { patients, doctors } = usePage().props;
 
     //--Patients sayfasına özel kaydırma işlemini devre dışı bırakma başlangıcı--
     useEffect(() => {
-        // Tüm sayfa kaydırmasını devre dışı bırak
         document.body.style.overflow = 'hidden';
 
         return () => {
-            // Sayfadan çıkıldığında kaydırmayı geri yükle
             document.body.style.overflow = 'auto';
         };
     }, []);
     //--Patients sayfasına özel kaydırma işlemini devre dışı bırakma bitişi--
 
+    //--Rendevu kayıtlarını getir başlangıcı--
+    const [selectedAppointments, setSelectedAppointments] = useState<Appointment[]>([]);
+    const [isListModalOpen, setIsListModalOpen] = useState(false);
+    const handleListModalToggle = () => {
+        setIsListModalOpen(!isListModalOpen);
+    };
+    const fetchAppointments = (patientTCKN: string) => {
+        axios.post(
+            '/patients/getAppointmentRecords', // Inertia yerine doğrudan axios kullanılıyor
+            { TCKN: patientTCKN }
+        ).then((response) => {
+            setSelectedAppointments(response.data.appointments); // JSON yanıtını işleyin
+            setIsListModalOpen(true); // Modal'ı göstermek için state güncelleyin
+        }).catch((error) => {
+            toast.error('Randevular yüklenirken bir hata oluştu:', error);
+            console.error('Randevular yüklenirken bir hata oluştu:', error);
+        });
+    };
+    //--Radevu kayıtlarının getir bitişi--
 
     //--Hasta Ekleme/Güncelleme Başlangıcı--
     const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
     const [originalPatient, setOriginalPatient] = useState<Patient | null>(null);
     const [isSaveDisabled, setIsSaveDisabled] = useState(true);
     const handleAddPatient = () => {
-        // Yeni boş hasta oluştur
         const newPatient: Patient = {
-            id: 0, // Sahte bir id (Backend'de bu değeri kaydettikten sonra güncelleyeceksiniz.)
+            id: 0,
             isDeleted: false,
             TCKN: '',
             name: '',
@@ -58,15 +88,15 @@ export default function Patients() {
             gender: '',
             phone_number: '',
             created_at: new Date().toISOString(),
-            created_by: user.name, // Gerekirse oturum açmış kullanıcıyı ekleyebilirsiniz
+            created_by: user.name,
         };
-        setSelectedPatient(newPatient); // Sağ tarafı yeni hasta bilgileriyle doldurun
-        setOriginalPatient(newPatient); // Orijinal durumu da aynı yapın
+        setSelectedPatient(newPatient);
+        setOriginalPatient(newPatient);
     };
     const handleSelect = (id: number) => {
         const patient = (patients as Patient[]).find((p: Patient) => p.id === id); // Seçilen hastayı bul
-        setSelectedPatient(patient ?? null); // Sağdaki detay alanına göndermek için durumu ayarla
-        setOriginalPatient(patient ?? null); // Hasta seçildiğinde orijinal bilgiyi sakla
+        setSelectedPatient(patient ?? null);
+        setOriginalPatient(patient ?? null);
     };
     useEffect(() => {
         if (originalPatient && selectedPatient) {
@@ -78,31 +108,25 @@ export default function Patients() {
     const handleSave = () => {
         if (selectedPatient) {
             if (selectedPatient.id === 0) {
-                // Yeni hasta oluşturulacaksa POST isteği
                 router.post('/patients/create', { ...selectedPatient }, {
                     onSuccess: (page: any) => {
-                        const successMessage = page.props.flash?.message || "Hasta başarıyla eklendi!";
-                        toast.success(successMessage);
+                        toast.success(page.props.flash?.message || "Hasta başarıyla eklendi!");
                         console.log("Yeni Hasta Eklendi: ", selectedPatient.name);
                     },
                     onError: (errors: any) => {
-                        const errorMessage = errors?.message || "Hata: Bu TC kimlik numarasına kayıtlı hasta bulunuyor!";
-                        toast.error(errorMessage);
+                        toast.error(errors?.message || "Hata: Bu TC kimlik numarasına kayıtlı hasta bulunuyor!");
                         console.log("Hasta Eklenemedi: ", selectedPatient.name);
                     }
                 });
             } else {
-                // Mevcut hasta güncellenecekse PUT isteği
                 router.put(`/patients/update/${selectedPatient.id}`, { ...selectedPatient }, {
                     onSuccess: (page: any) => {
-                        const successMessage = page.props.flash?.message || "Hasta başarıyla güncellendi!";
-                        toast.success(successMessage);
+                        toast.success(page.props.flash?.message || "Hasta başarıyla güncellendi!");
                         console.log("Hasta Güncellendi: ", selectedPatient.name);
                         setOriginalPatient(selectedPatient);
                     },
                     onError: (errors: any) => {
-                        const errorMessage = errors?.message || "Hata: Güncelleme başarısız!";
-                        toast.error(errorMessage); // Hata mesajı
+                        toast.error(errors?.message || "Hata: Güncelleme başarısız!");
                     }
                 });
             }
@@ -129,11 +153,13 @@ export default function Patients() {
             if (selectedPatient.id != 0) {
                 if (confirm('Bu hastayı silmek istediğinize emin misiniz?')) {
                     router.put(`/patients/delete/${selectedPatient.id}`, { ...selectedPatient }, {
-                        onSuccess: () => {
+                        onSuccess: (page: any) => {
                             console.log("Hasta Silindi: ", selectedPatient.name);
+                            toast.success(page.props.flash?.message || "Hasta kaydı silindi")
                             setSelectedPatient(null);
                         },
-                        onError: () => {
+                        onError: (errors: any) => {
+                            toast.success(errors.props.flash?.message || "Hata: Hasta kaydı silinemedi!")
                             console.log("Hasta Silinemedi: ", selectedPatient.name);
                         }
                     });
@@ -153,7 +179,6 @@ export default function Patients() {
     //--Hasta Kayıt İptal İşlemi Bitişi--
 
     //--Randevu oluşturma başlangıcı--
-    // Modal görünürlük durumu
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [appointmentDetails, setAppointmentDetails] = useState({
         patient_id: '',
@@ -162,11 +187,10 @@ export default function Patients() {
         doctor_name: '',
         operation: '',
         notes: '',
-        created_at: new Date().toISOString(),
-        created_by: user.name,
+        created_at: '',
+        created_by: '',
         status: '',
     });
-    // Modal'ı aç/kapat
     const handleModalToggle = () => {
         setIsModalOpen(!isModalOpen);
         setAppointmentDetails({
@@ -184,43 +208,32 @@ export default function Patients() {
     const handleAppointmentChange = (field: string, value: string) => {
         setAppointmentDetails({
             ...appointmentDetails,
-            [field]: value,
-        });
+            [field]: value
+        } as Appointment);
     };
     const handleCreateAppointment = () => {
-        // Randevu oluşturma işlemi burada yapılacaktır
-        console.log(selectedPatient);
-        console.log(appointmentDetails);
         router.post('/appointments/create', {...appointmentDetails}, {
                 onSuccess: (page: any) => {
                     console.log('Randevu Oluşturuldu:', appointmentDetails);
-                    const successMessage = page.props.flash?.message || "Randevu Oluşuturuldu";
-                    toast.success(successMessage);
+                    toast.success(page.props.flash?.message || "Randevu Oluşuturuldu");
                     setAppointmentDetails({
-                            patient_id: '',
-                            appointment_date: '',
-                            appointment_time: '',
-                            doctor_name: selectedPatient?.doctor.toString() ?? '',
-                            operation: '',
-                            notes: '',
-                            created_at: new Date().toISOString(),
-                            created_by: user.name,
-                            status: '',
-                        }
-                    )
+                        patient_id: '',
+                        appointment_date: '',
+                        appointment_time: '',
+                        doctor_name: '',
+                        operation: '',
+                        notes: '',
+                        created_at: '',
+                        created_by: '',
+                        status: '',
+                    });
 
                 },
                 onError: (errors: any) => {
-                    const errorMessage = errors?.message || "Hata: Randevu oluşturulamadı!";
-                    toast.error(errorMessage);
+                    toast.error(errors?.message || "Hata: Randevu oluşturulamadı!");
                     console.log('Randevu Oluşturulamadı');
                 }
         });
-
-        // Backend çağrısı (örneğin, POST isteği)
-        // router.post('/appointments/create', { ...appointmentDetails });
-
-        // Modalı kapat
         handleModalToggle();
     };
     //--Randevu Oluşturma bitişi--
@@ -257,8 +270,7 @@ export default function Patients() {
 
     //--Telefon numarası kontrol başlangıcı--
     const formatPhoneNumber = (value: string): string => {
-        // "+90-" kısmını sabit bırak ve yalnızca kullanıcı girişini formatla
-        const numbersOnly = value.replace(/\D/g, '').replace(/^90/, ''); // "+90" kısmını dikkatten çıkar
+        const numbersOnly = value.replace(/\D/g, '').replace(/^90/, '');
         const match = numbersOnly.match(/^(\d{3})(\d{3})(\d{4})$/);
 
         if (match) {
@@ -271,15 +283,13 @@ export default function Patients() {
             return `+90-${numbersOnly}`;
         }
 
-        return '+90'; // Kullanıcı boş bıraktıysa sadece "+90" döndür
+        return '+90';
     };
     const isPhoneNumberValid = (phone: string): boolean => {
-        // Telefon numarası "+90-" ile başlamıyor veya toplam uzunluk 16 değilse false
         return phone.startsWith("+90-") && phone.length === 16;
     };
     const handlePhoneNumberChange = (value: string) => {
         const formattedPhone = formatPhoneNumber(value);
-        // Eğer değer 16 karakteri geçiyorsa işlem yapma
         if (value.length > 16) return;
         handleChange("phone_number", formattedPhone);
     };
@@ -287,7 +297,6 @@ export default function Patients() {
 
     //--E-posta kontrol başlangıcı--
     const isValidEmail = (email: string): boolean => {
-        // Geçerli e-posta doğrulama regex'i
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!email) {return true}
         return emailRegex.test(email);
@@ -308,7 +317,7 @@ export default function Patients() {
                         {/* Yeni Hasta Ekle düğmesi */}
                         <button
                             onClick={handleAddPatient}
-                            className="px-4 py-2 bg-dark-button-primary text-text-primary rounded-lg hover:bg-dark-button-secondary transition-all duration-200"
+                            className="px-4 py-2 bg-green-300 text-text-primary rounded-lg hover:bg-green-400 transition-all duration-200"
                         >
                             Yeni Hasta Ekle
                         </button>
@@ -343,10 +352,10 @@ export default function Patients() {
                                 {(patients as Patient[]).map((patient: Patient) => (
                                     <tr
                                         key={patient.id}
-                                        onClick={() => handleSelect(patient.id)} // Hasta seçimi
+                                        onClick={() => handleSelect(patient.id)}
                                         className={`border-b cursor-pointer border-dark-background-quinary
                                     hover:bg-gray-100 dark:hover:bg-dark-background-tertiary
-                                    ${selectedPatient?.id === patient.id ? 'bg-gray-200 dark:bg-dark-background-tertiary' : ''}`} // Seçili olan hastayı vurgula
+                                    ${selectedPatient?.id === patient.id ? 'bg-gray-200 dark:bg-dark-background-tertiary' : ''}`}
                                     >
                                         <td className="whitespace-nowrap px-6 py-4">{patient.TCKN}</td>
                                         <td className="whitespace-nowrap px-6 py-4">{patient.name}</td>
@@ -410,7 +419,7 @@ export default function Patients() {
                                     <div>
                                         <p>Cinsiyet</p>
                                         <select
-                                            onChange={(e) => handleChange("gender", e.target.value)} // Seçileni handleChange ile al
+                                            onChange={(e) => handleChange("gender", e.target.value)}
                                             value={selectedPatient.gender}
                                             className="w-[60%] px-4 py-2 mt-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 dark:bg-dark-background dark:border-gray-600 dark:text-gray-200 dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         >
@@ -459,45 +468,63 @@ export default function Patients() {
                                 </div>
 
                                 {/* Eylem Düğmeleri */}
-                                <div className="flex space-x-4 border-t pt-4">
-                                    <button
-                                        onClick={handleSave}
-                                        disabled={isSaveDisabled} // Eğer bilgiler değişmediyse devre dışı bırak
-                                        className={`px-4 py-2 rounded-lg transition-all duration-200 ${
-                                            isSaveDisabled
-                                                ? 'bg-gray-400 text-text-primary cursor-not-allowed'
-                                                : 'bg-dark-button-primary hover:bg-dark-button-secondary text-text-primary'
-                                        }`}
-                                    >
-                                        {isDeleteDisabled ? 'Kaydet' : 'Güncelle'}
-                                    </button>
-                                    {isDeleteDisabled ? (
+                                <div className="flex items-center border-t justify-between">
+                                    <div className="flex space-x-4 pt-4">
                                         <button
-                                            onClick={setSelectedPatientToNull}
-                                            className="px-4 py-2 bg-button-secondary text-text-primary rounded-lg hover:bg-button-primary transition-all duration-200"
+                                            onClick={handleSave}
+                                            disabled={isSaveDisabled}
+                                            className={`px-4 py-2 rounded-lg transition-all duration-200 ${
+                                                isSaveDisabled
+                                                    ? 'bg-gray-400 text-text-primary cursor-not-allowed'
+                                                    : 'bg-dark-button-primary hover:bg-dark-button-secondary text-text-primary'
+                                            }`}
                                         >
-                                            İptal
+                                            {isDeleteDisabled ? 'Kaydet' : 'Güncelle'}
                                         </button>
-                                    ) : (
-                                        <>
+                                        {isDeleteDisabled ? (
                                             <button
-                                                onClick={handleModalToggle}
-                                                className="px-4 py-2 bg-background-quaternary text-text-primary rounded-lg hover:bg-background-quinary transition-all duration-200"
-                                            >
-                                                Randevu Oluştur
-                                            </button>
-                                            <button
-                                                onClick={handleDelete}
+                                                onClick={setSelectedPatientToNull}
                                                 className="px-4 py-2 bg-button-secondary text-text-primary rounded-lg hover:bg-button-primary transition-all duration-200"
                                             >
-                                                Sil
+                                                İptal
                                             </button>
-                                        </>
+                                        ) : (
+                                            <>
+                                                <button
+                                                    onClick={handleModalToggle}
+                                                    className="px-4 py-2 bg-background-quaternary text-text-primary rounded-lg hover:bg-background-quinary transition-all duration-200"
+                                                >
+                                                    Randevu Oluştur
+                                                </button>
+                                                <button
+                                                    onClick={handleDelete}
+                                                    className="px-4 py-2 bg-button-secondary text-text-primary rounded-lg hover:bg-button-primary transition-all duration-200"
+                                                >
+                                                    Sil
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                    {isDeleteDisabled === false && (
+                                        <div className="flex space-x-4 pt-4">
+                                            <button
+                                                onClick={() => fetchAppointments(selectedPatient.TCKN)}
+                                                className="px-4 py-2 bg-dark-button-primary text-text-primary rounded-lg hover:bg-dark-button-secondary transition-all duration-200"
+                                            >
+                                                Randevu kayıtları
+                                            </button>
+                                            <button
+                                                onClick={handleCreateAppointment}
+                                                className="px-4 py-2 bg-dark-button-primary text-text-primary rounded-lg hover:bg-dark-button-secondary transition-all duration-200"
+                                            >
+                                                Mesaj
+                                            </button>
+                                        </div>
                                     )}
+                                    </div>
                                 </div>
-                            </div>
-                        ) : (
-                            <div className="flex items-center justify-center h-full">
+                                ) : (
+                                <div className="flex items-center justify-center h-full">
                                 <p>Bir hasta seçin.</p>
                             </div>
                         )}
@@ -511,6 +538,12 @@ export default function Patients() {
                     selectedPatientName={selectedPatient?.name || 'Hata - Sayfayı Yenileyin!'}
                     onAppointmentChange={handleAppointmentChange}
                     onCreateAppointment={handleCreateAppointment}
+                />
+                <AppointmentListModal
+                    open={isListModalOpen}
+                    onClose={handleListModalToggle}
+                    appointments={selectedAppointments}
+                    selectedPatientName={selectedPatient?.name || "Hata - Hasta Bulunamadı!"}
                 />
             </AuthenticatedLayout>
         </div>

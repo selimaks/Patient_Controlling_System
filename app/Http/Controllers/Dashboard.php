@@ -22,7 +22,7 @@ class Dashboard extends Controller
             'completedAppointmentsToday' => Appointment::where('status', 'completed')->whereDate('appointment_date', $today)->count(),
             'totalAppointments' => Appointment::where('status', 'scheduled')->count(),
             'totalDoctors' => User::where('job', 'doctor')->count(),
-            'todaysSchedules' => Appointment::with(['patient:name,TCKN']) // İlişkiyi yükle
+            'todaysSchedules' => Appointment::join('patients', 'patient_id', '=', 'patients.TCKN') // İlişkiyi yükle
             ->whereDate('appointment_date', $today)
                 ->get(),
             'newPatients' => Patient::whereDate('created_at', $today)->get(),

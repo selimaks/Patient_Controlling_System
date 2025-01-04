@@ -22,7 +22,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/appointments', [Appointment::class, 'index'])->name('appointments');
     Route::post('/appointments/create', [Appointment::class, 'create'])->name('appointments.create');
 
+
     Route::get('/patients', [PatientController::class, 'index'])->name('patients');
+    Route::post('/patients/getAppointmentRecords', [PatientController::class, 'getAppointmentsRecord'])->name('patients.getAppointmentsRecord');
     Route::put('/patients/update/{id}', [PatientController::class, 'update'])->name('patients.update');
     Route::put('/patients/delete/{id}', [PatientController::class, 'delete'])->name('patients.delete');
     Route::post('/patients/create', [PatientController::class, 'create'])->name('patients.create');

@@ -16,6 +16,14 @@ class PatientController extends Controller
         return inertia('Patients', ['patients' => $patients,
             'doctors' => $doctors]);
     }
+    public function getAppointmentsRecord(Request $request)
+    {
+        $appointments = DB::table('appointments')->where('patient_id',$request['TCKN'])->orderBy('appointment_date')->get();
+        return response()->json([
+            'appointments' => $appointments,
+        ]);
+    }
+
     public function update(Request $request, $id)
     {
         $patient = Patient::findOrFail($id);

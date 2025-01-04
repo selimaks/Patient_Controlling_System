@@ -17,6 +17,7 @@ return new class extends Migration
             $table->boolean('isDeleted')->default(false);
             $table->string('created_by')->default('system');
             $table->string('name', 50);
+            $table->string('old_information')->nullable();//sıralama (isim,doktor,telefon,cinsiyet,eposta,kaydeden/isim,doktor,telefon,cinsiyet,eposta,kaydeden)
             $table->string('TCKN')->unique();
             $table->string('doctor')->nullable();
             $table->string('phone_number', 20)->unique();

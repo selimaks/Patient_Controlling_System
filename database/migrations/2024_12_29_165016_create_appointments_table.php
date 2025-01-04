@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('status', ['scheduled', 'completed', 'canceled']);
             $table->string('operation')->default('not_specified');
             $table->string('notes')->nullable();
+            $table->string('prescription')->nullable();
         });
     }
 
