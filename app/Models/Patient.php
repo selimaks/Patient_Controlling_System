@@ -24,6 +24,7 @@ class Patient extends Model
         'TCKN',
         'doctor',
         'gender',
+        'old_information',
         'isDeleted',
         'created_by'
 

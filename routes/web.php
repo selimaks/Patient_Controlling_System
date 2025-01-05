@@ -18,6 +18,8 @@ Route::get('/', function () {
 });
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [Dashboard::class, 'dashboard'])->name('dashboard');
+    Route::put('/dashboard/complete/{id}', [Dashboard::class, 'completed'])->name('dashboard.completed');
+    Route::put('/dashboard/cancel/{id}', [Dashboard::class, 'canceled'])->name('dashboard.canceled');
 
     Route::get('/appointments', [Appointment::class, 'index'])->name('appointments');
     Route::post('/appointments/create', [Appointment::class, 'create'])->name('appointments.create');

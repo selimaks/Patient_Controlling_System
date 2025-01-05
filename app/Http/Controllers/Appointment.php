@@ -52,6 +52,7 @@ class Appointment extends Controller
                     'operation' => $validatedData['operation'],
                     'notes' => $validatedData['notes'],
                     'created_by' => $validatedData['created_by'],
+                    'status' => $validatedData['status'],
                     'updated_at' => now(),
                     'created_at' => DB::table('appointments')->where([
                         'patient_id' => $validatedData['patient_id'],

@@ -32,6 +32,26 @@ class PatientController extends Controller
                 'error' => 'Hasta bulunamadı!'
             ]);
         }
+        $oldInfo = json_encode(
+        array_merge(
+        // Mevcut `old_information` verisi varsa önce çözülerek alınır
+            json_decode(
+                DB::table('patients')->where('TCKN', $request['TCKN'])->value('old_information') ?? '[]',
+                true
+            ),
+            // Yeni bilgiler eklenir
+            [[
+                'name' => $request['name'] ?? null,
+                'doctor' => $request['doctor'] ?? null,
+                'phone_number' => $request['phone_number'] ?? null,
+                'gender' => $request['gender'] ?? null,
+                'email' => $request['email'] ?? null,
+                'created_by' => $request['created_by'] ?? null,
+                'updated_at' => now(), // Güncellemenin zamanı eklenir
+            ]]
+        )
+    );
+        $patient->update(['old_information' => $oldInfo]);
         $patient->update($request->only(['TCKN', 'name', 'email', 'phone_number', 'doctor', 'gender']));
         return redirect()->back()->with('message', 'Hasta başarıyla güncellendi.');
     }
@@ -90,7 +110,25 @@ class PatientController extends Controller
                     'created_by' => $validatedData['created_by'] ?? null,
                     'updated_at' => now(),
                     'isDeleted' => "0",
-                ],
+                    'old_information' => json_encode(
+                        array_merge(
+                        // Mevcut `old_information` verisi varsa önce çözülerek alınır
+                            json_decode(
+                                DB::table('patients')->where('TCKN', $validatedData['TCKN'])->value('old_information') ?? '[]',
+                                true
+                            ),
+                            // Yeni bilgiler eklenir
+                            [[
+                                'name' => $request['name'] ?? null,
+                                'doctor' => $request['doctor'] ?? null,
+                                'phone_number' => $request['phone_number'] ?? null,
+                                'gender' => $request['gender'] ?? null,
+                                'email' => $request['email'] ?? null,
+                                'created_by' => $request['created_by'] ?? null,
+                                'updated_at' => now(), // Güncellemenin zamanı eklenir
+                            ]]
+                        )
+                    ),                ],
                 // created_at yalnızca yeni kayıt ekleniyorsa eklenir
                 DB::table('patients')->where('TCKN', $validatedData['TCKN'])->exists()
                     ? [] // Eğer TCKN mevcutsa, created_at eklenmez

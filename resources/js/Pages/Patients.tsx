@@ -16,12 +16,14 @@ interface Patient {
     email: string;
     doctor: string;
     gender: string;
+    old_information: string;
     phone_number: string;
     created_at: string;
     created_by: string;
 }
 
 interface Appointment {
+    id: number;
     patient_id: string;
     appointment_date: string;
     appointment_time: string;
@@ -31,6 +33,7 @@ interface Appointment {
     status: string;
     operation: string;
     notes: string;
+    prescription: string;
 }
 
 interface Doctor {
@@ -42,6 +45,8 @@ export default function Patients() {
 
     const user = usePage().props.auth.user;
     const { patients, doctors } = usePage().props;
+
+
 
     //--Patients sayfasına özel kaydırma işlemini devre dışı bırakma başlangıcı--
     useEffect(() => {
@@ -86,6 +91,7 @@ export default function Patients() {
             email: '',
             doctor: '',
             gender: '',
+            old_information: '',
             phone_number: '',
             created_at: new Date().toISOString(),
             created_by: user.name,
