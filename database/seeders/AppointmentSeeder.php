@@ -13,6 +13,6 @@ class AppointmentSeeder extends Seeder
     public function run(): void
     {
         // Örneğin 100 tane random appointment (randevu) oluşturulur.
-        Appointment::factory(10)->create();
+        Appointment::factory(50)->create();
     }
 }

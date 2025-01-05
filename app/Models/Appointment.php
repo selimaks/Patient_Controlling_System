@@ -11,8 +11,19 @@ class Appointment extends Model
     /** @use HasFactory<AppointmentFactory> */
     use HasFactory;
     //
+    protected $table = 'appointments';
     protected $fillable = [
-        'reason',
+        'created_by',
+        'appointment_date',
+        'appointment_time',
+        'status',
+        'doctor_name',
+        'patient_id',
+        'operation',
         'notes',
     ];
+    public function patient()
+    {
+        return $this->belongsTo(Patient::class, 'patient_id', 'TCKN');
+    }
 }

@@ -14,14 +14,15 @@ return new class extends Migration
         Schema::create('patients', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->boolean('isDeleted')->default(false);
             $table->string('created_by')->default('system');
             $table->string('name', 50);
+            $table->text('old_information')->nullable();//sıralama (isim,doktor,telefon,cinsiyet,eposta,kaydeden/isim,doktor,telefon,cinsiyet,eposta,kaydeden)
             $table->string('TCKN')->unique();
-            $table->string('tcknRaw')->unique();/* Hash durumu kontrol edilecek!!! */
             $table->string('doctor')->nullable();
             $table->string('phone_number', 20)->unique();
-            $table->enum('gender', ['male', 'female'])->nullable();
-            $table->string('email')->unique();
+            $table->string('gender')->nullable();
+            $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
         });
