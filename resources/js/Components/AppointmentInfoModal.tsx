@@ -17,8 +17,6 @@ interface AppointmentInfoModalProps {
         status: string;
     };
     selectedPatientName: string | null;
-    onAppointmentChange: (field: string, value: string) => void;
-    onCreateAppointment: () => void;
 }
 
 const AppointmentInfoModal: React.FC<AppointmentInfoModalProps> = ({
