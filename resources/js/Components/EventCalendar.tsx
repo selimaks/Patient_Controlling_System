@@ -1,4 +1,4 @@
-import { useState, MouseEvent, useEffect } from "react"
+import { useState, useEffect } from "react"
 import {router, usePage} from '@inertiajs/react';
 import { Box, Button, ButtonGroup, Card, CardContent, Container, Divider } from "@mui/material"
 import "../../css/app.css"
@@ -113,11 +113,6 @@ const EventCalendar = () => {
   const [events, setEvents] = useState<IEventInfo[]>([])
   const [todos, setTodos] = useState<ITodo[]>([])
 
-  const [eventFormData, setEventFormData] = useState<EventFormData>(initialEventFormState)
-
-  const [datePickerEventFormData, setDatePickerEventFormData] =
-    useState<DatePickerEventFormData>(initialDatePickerEventFormData)
-
   const handleSelectSlot = (event: Event) => {
     setCurrentEvent(event)
   }
@@ -125,14 +120,6 @@ const EventCalendar = () => {
   const handleSelectEvent = (event: IEventInfo) => {
     setCurrentEvent(event)
     setEventInfoModal(true)
-  }
-
-  const handleClose = () => {
-    setEventFormData(initialEventFormState)
-  }
-
-  const handleDatePickerClose = () => {
-    setDatePickerEventFormData(initialDatePickerEventFormData)
   }
 
     useEffect(() => {
