@@ -22,6 +22,10 @@ interface AppointmentModalProps {
 interface Doctor {
     name: string;
 }
+interface Operation {
+    operation: string;
+    created_by: string;
+}
 
 const AppointmentModal: React.FC<AppointmentModalProps> = ({
     open,
@@ -31,7 +35,8 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
     onAppointmentChange,
     onCreateAppointment,
 }) => {
-    const {doctors} = usePage().props;
+    const {doctors, operations} = usePage().props;
+
     return (
         <Modal open={open} onClose={onClose}>
             <Box
@@ -90,13 +95,32 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                     </div>
                     <div>
                         <label className="block text-sm font-medium">Operasyon</label>
+                        <div>
+                            <select
+                                className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                value={appointmentDetails.operation}
+                                onChange={(e) => onAppointmentChange('operation', e.target.value)}
+                            >
+                                <option value="" disabled>
+                                    Operasyon Seçiniz
+                                </option>
+                                {(operations as Operation[]).map((operation, index) => (
+                                    <option key={index} value={operation.operation}>
+                                        {operation.operation}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                    {/*<div>
+                        <label className="block text-sm font-medium">Operasyon</label>
                         <input
                             type="text"
                             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
                             value={appointmentDetails.operation}
                             onChange={(e) => onAppointmentChange('operation', e.target.value)}
                         />
-                    </div>
+                    </div>*/}
                     <div>
                         <label className="block text-sm font-medium">Notlar</label>
                         <textarea
@@ -121,13 +145,13 @@ const AppointmentModal: React.FC<AppointmentModalProps> = ({
                     </button>
                     <button
                         className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                        onClick={()=> {
+                        onClick={() => {
                             onAppointmentChange('patient_id', appointmentDetails.patient_id);
                             onAppointmentChange('status', 'scheduled');
                             onCreateAppointment();
-                    }}
+                        }}
                     >
-                    Oluştur
+                        Kaydet
                     </button>
                 </div>
             </Box>

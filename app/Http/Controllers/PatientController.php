@@ -13,8 +13,9 @@ class PatientController extends Controller
     {
         $patients = DB::table('patients')->orderBy('name')->where("isDeleted", "0")->get();
         $doctors = DB::table('users')->where('job', 'doctor')->select('name')->get();
+        $operations = DB::table('operations')->get();
         return inertia('Patients', ['patients' => $patients,
-            'doctors' => $doctors]);
+            'doctors' => $doctors, 'operations' => $operations]);
     }
     public function getAppointmentsRecord(Request $request)
     {

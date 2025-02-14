@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('created_by')->default('system');
             $table->date('appointment_date');
             $table->time('appointment_time');
+            $table->time('appointment_started_at')->nullable();
+            $table->time('appointment_finished_at')->nullable();
             $table->string('patient_id');
             $table->string('doctor_name');
             $table->enum('status', ['scheduled', 'completed', 'canceled', 'pending', 'missed']);

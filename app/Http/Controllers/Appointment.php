@@ -27,6 +27,7 @@ class Appointment extends Controller
             ->get();
 
         return Inertia::render('Appointments', [
+            'operations' => DB::table('operations')->get(),
             'appointments' => $appointments,
         ]);
     }
@@ -37,7 +38,6 @@ class Appointment extends Controller
                 'appointment_time' => 'required|date_format:H:i:s',
                 'doctor_name' => 'required|string|max:255',
                 'operation' => 'required|string|max:255',
-                'notes' => 'required|string|max:255',
                 'created_by' => 'required|string|max:255',
                 'status' => 'required|string|max:25',
         ]);
@@ -50,7 +50,7 @@ class Appointment extends Controller
                     'appointment_time' => $validatedData['appointment_time'],
                     'doctor_name' => $validatedData['doctor_name'],
                     'operation' => $validatedData['operation'],
-                    'notes' => $validatedData['notes'],
+                    'notes' => $request['notes'],
                     'created_by' => $validatedData['created_by'],
                     'status' => $validatedData['status'],
                     'updated_at' => now(),
@@ -62,5 +62,21 @@ class Appointment extends Controller
             )
         );
         return redirect()->back()->with('message', 'Randevu kaydı yapıldı.');
+    }
+    public static function update(Request $request, $id)
+    {
+        $appointment = AppointmentModel::findOrFail($id);
+        $appointment->update([
+            'appointment_date' => $request['appointment_date'],
+            'appointment_time' => $request['appointment_time'],
+            'doctor_name' => $request['doctor_name'],
+            'operation' => $request['operation'],
+            'notes' => $request['notes'],
+            ]);
+        return redirect()->back()->with('message', 'Randevu düzenlendi');
+    }
+    public static function delete(Request $request){
+        AppointmentModel::findOrFail($request['_id'])->delete();
+        return redirect()->back()->with('message', 'Randevu silindi.');
     }
 }

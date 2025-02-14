@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Appointment as AppointmentModel;
 use Carbon\Carbon;
 use App\Models\Patient;
 use App\Models\Appointment;
@@ -16,6 +17,7 @@ class Dashboard extends Controller
         $today = Carbon::today();
 
         return inertia('Dashboard', [
+
             'totalPatients' => Patient::count(),
             'todaysPatients' => Patient::whereDate('created_at', $today)->count(),
             'todaysAppointments' => Appointment::whereDate('appointment_date', $today)->count(),
@@ -36,6 +38,13 @@ class Dashboard extends Controller
         $appointment = Appointment::findOrFail($id);
         $appointment->update(['status' => 'completed']);
         return redirect()->back()->with('message', 'Randevu tamamlandı');
+    }
+    public function fetch(Request $request, $id)
+    {
+        $appointment = AppointmentModel::findOrFail($id);
+        return response()->json([
+            'appointment' => $appointment,
+        ]);
     }
     public function canceled(Request $request, $id)
     {

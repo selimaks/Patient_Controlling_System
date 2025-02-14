@@ -33,13 +33,6 @@ const AddEventModal = ({ open, handleClose, eventFormData, setEventFormData, onA
     }))
   }
 
-  const handleTodoChange = (e: React.SyntheticEvent, value: ITodo | null) => {
-    setEventFormData((prevState) => ({
-      ...prevState,
-      todoId: value?._id,
-    }))
-  }
-
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Randevu Oluştur</DialogTitle>
@@ -58,13 +51,12 @@ const AddEventModal = ({ open, handleClose, eventFormData, setEventFormData, onA
                 onChange={onChange}
             />
           <Autocomplete
-            onChange={handleTodoChange}
             disablePortal
             id="combo-box-demo"
             options={todos}
             sx={{ marginTop: 4 }}
             getOptionLabel={(option) => option.title}
-            renderInput={(params) => <TextField {...params} variant='filled' label="İşlem" />}
+            renderInput={(params) => (<TextField {...params} variant='filled' label="İşlem" />)}
           />
         </Box>
       </DialogContent>

@@ -4,6 +4,7 @@ use App\Http\Controllers\Appointment;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Operations;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,11 +20,15 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [Dashboard::class, 'dashboard'])->name('dashboard');
     Route::put('/dashboard/complete/{id}', [Dashboard::class, 'completed'])->name('dashboard.completed');
+    Route::post('/dashboard/fetch/{id}', [Dashboard::class, 'fetch'])->name('dashboard.fetch');
     Route::put('/dashboard/cancel/{id}', [Dashboard::class, 'canceled'])->name('dashboard.canceled');
 
     Route::get('/appointments', [Appointment::class, 'index'])->name('appointments');
     Route::post('/appointments/create', [Appointment::class, 'create'])->name('appointments.create');
+    Route::put('/appointments/delete', [Appointment::class, 'delete'])->name('appointments.delete');
 
+    Route::put('operations/createOperation', [Operations::class, 'createOperation'])->name('operations.createOperation');
+    Route::put('operations/deleteOperations/', [Operations::class, 'deleteOperations'])->name('operations.deleteOperations');
 
     Route::get('/patients', [PatientController::class, 'index'])->name('patients');
     Route::post('/patients/getAppointmentRecords', [PatientController::class, 'getAppointmentsRecord'])->name('patients.getAppointmentsRecord');

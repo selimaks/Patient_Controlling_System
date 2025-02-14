@@ -1,7 +1,39 @@
 {
   "node_modules/laravel-vite-plugin/inertia-helpers/index.js": [],
+  "node_modules/react-big-calendar/lib/css/react-big-calendar.css": [
+    "/build/assets/Appointments-CkXIrzCf.js",
+    "/build/assets/Appointments-DxzzN9QP.css"
+  ],
+  "resources/css/app.css": [
+    "/build/assets/AuthenticatedLayout-C_bCNmYL.js",
+    "/build/assets/AuthenticatedLayout-DVEPD-1b.css"
+  ],
+  "resources/js/Components/AddDatePickerEventModal.tsx": [
+    "/build/assets/Appointments-CkXIrzCf.js",
+    "/build/assets/Appointments-DxzzN9QP.css"
+  ],
+  "resources/js/Components/AddEventModal.tsx": [
+    "/build/assets/Appointments-CkXIrzCf.js",
+    "/build/assets/Appointments-DxzzN9QP.css"
+  ],
+  "resources/js/Components/AddTodoModal.tsx": [
+    "/build/assets/Appointments-CkXIrzCf.js",
+    "/build/assets/Appointments-DxzzN9QP.css"
+  ],
   "resources/js/Components/ApplicationLogo.tsx": [
     "/build/assets/ApplicationLogo-xMpxFOcX.js"
+  ],
+  "resources/js/Components/AppointmentInfoModal.tsx": [
+    "/build/assets/Patients-pfLNVvgU.js",
+    "/build/assets/ReactToastify-BEzrRqYo.css"
+  ],
+  "resources/js/Components/AppointmentListModal.tsx": [
+    "/build/assets/Patients-pfLNVvgU.js",
+    "/build/assets/ReactToastify-BEzrRqYo.css"
+  ],
+  "resources/js/Components/AppointmentModal.tsx": [
+    "/build/assets/Patients-pfLNVvgU.js",
+    "/build/assets/ReactToastify-BEzrRqYo.css"
   ],
   "resources/js/Components/Checkbox.tsx": [
     "/build/assets/Login-CFq8Iylx.js"
@@ -9,8 +41,25 @@
   "resources/js/Components/DangerButton.tsx": [
     "/build/assets/DeleteUserForm-CRyoRFsl.js"
   ],
+  "resources/js/Components/DashboardCard.tsx": [
+    "/build/assets/Dashboard-A9Ad1JMG.js",
+    "/build/assets/ReactToastify-BEzrRqYo.css"
+  ],
   "resources/js/Components/Dropdown.tsx": [
-    "/build/assets/AuthenticatedLayout-CRwQkLog.js"
+    "/build/assets/AuthenticatedLayout-C_bCNmYL.js",
+    "/build/assets/AuthenticatedLayout-DVEPD-1b.css"
+  ],
+  "resources/js/Components/EventCalendar.tsx": [
+    "/build/assets/Appointments-CkXIrzCf.js",
+    "/build/assets/Appointments-DxzzN9QP.css"
+  ],
+  "resources/js/Components/EventInfo.tsx": [
+    "/build/assets/Appointments-CkXIrzCf.js",
+    "/build/assets/Appointments-DxzzN9QP.css"
+  ],
+  "resources/js/Components/EventInfoModal.tsx": [
+    "/build/assets/Appointments-CkXIrzCf.js",
+    "/build/assets/Appointments-DxzzN9QP.css"
   ],
   "resources/js/Components/InputError.tsx": [
     "/build/assets/TextInput-CfTqIySL.js"
@@ -22,13 +71,15 @@
     "/build/assets/DeleteUserForm-CRyoRFsl.js"
   ],
   "resources/js/Components/NavLink.tsx": [
-    "/build/assets/AuthenticatedLayout-CRwQkLog.js"
+    "/build/assets/AuthenticatedLayout-C_bCNmYL.js",
+    "/build/assets/AuthenticatedLayout-DVEPD-1b.css"
   ],
   "resources/js/Components/PrimaryButton.tsx": [
     "/build/assets/PrimaryButton-DDF1xnxF.js"
   ],
   "resources/js/Components/ResponsiveNavLink.tsx": [
-    "/build/assets/AuthenticatedLayout-CRwQkLog.js"
+    "/build/assets/AuthenticatedLayout-C_bCNmYL.js",
+    "/build/assets/AuthenticatedLayout-DVEPD-1b.css"
   ],
   "resources/js/Components/SecondaryButton.tsx": [
     "/build/assets/DeleteUserForm-CRyoRFsl.js"
@@ -37,10 +88,15 @@
     "/build/assets/TextInput-CfTqIySL.js"
   ],
   "resources/js/Layouts/AuthenticatedLayout.tsx": [
-    "/build/assets/AuthenticatedLayout-CRwQkLog.js"
+    "/build/assets/AuthenticatedLayout-C_bCNmYL.js",
+    "/build/assets/AuthenticatedLayout-DVEPD-1b.css"
   ],
   "resources/js/Layouts/GuestLayout.tsx": [
     "/build/assets/GuestLayout-Bwvh98nL.js"
+  ],
+  "resources/js/Pages/Appointments.tsx": [
+    "/build/assets/Appointments-CkXIrzCf.js",
+    "/build/assets/Appointments-DxzzN9QP.css"
   ],
   "resources/js/Pages/Auth/ConfirmPassword.tsx": [
     "/build/assets/ConfirmPassword-DcfuyxXd.js"
@@ -61,10 +117,15 @@
     "/build/assets/VerifyEmail-CNL3OF64.js"
   ],
   "resources/js/Pages/Dashboard.tsx": [
-    "/build/assets/Dashboard-CYbmP5BT.js"
+    "/build/assets/Dashboard-A9Ad1JMG.js",
+    "/build/assets/ReactToastify-BEzrRqYo.css"
+  ],
+  "resources/js/Pages/Patients.tsx": [
+    "/build/assets/Patients-pfLNVvgU.js",
+    "/build/assets/ReactToastify-BEzrRqYo.css"
   ],
   "resources/js/Pages/Profile/Edit.tsx": [
-    "/build/assets/Edit-DcieHa-C.js"
+    "/build/assets/Edit-BDGTYAiF.js"
   ],
   "resources/js/Pages/Profile/Partials/DeleteUserForm.tsx": [
     "/build/assets/DeleteUserForm-CRyoRFsl.js"

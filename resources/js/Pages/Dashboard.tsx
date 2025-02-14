@@ -78,7 +78,7 @@ export default function Dashboard({totalPatients, todaysPatients, todaysAppointm
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="mt-8 grid md:grid-cols-[2fr_1.5fr] gap-6 cols">
                         <div className="bg-white rounded-lg shadow dark:bg-dark-background-secondary">
                             <div className="p-4">
                                 <h3 className="text-center font-semibold text-gray-800 dark:text-dark-text-primary">
@@ -113,7 +113,6 @@ export default function Dashboard({totalPatients, todaysPatients, todaysAppointm
                                         const currentTime = new Date(); // Şimdiki zaman
                                         const isValidTime = isValid(appointmentTime); // appointment_time geçerli mi kontrol edin.
                                         let rowClassName = "dark:text-dark-text-primary dark:odd:bg-dark-background-secondary dark:even:bg-dark-background-tertiary";
-
                                         if (isValidTime) {
                                             const timeDifference = differenceInMinutes(appointmentTime, currentTime); // Zaman farkı hesaplanıyor.
 
@@ -142,15 +141,20 @@ export default function Dashboard({totalPatients, todaysPatients, todaysAppointm
                                                 <td className="px-4 py-2 ">
                                                     {schedule.operation}
                                                 </td>
-                                                <td className="px-4 py-2 text-center text-[12px] grid grid-cols-2 ">
+                                                <td className="px-4 py-2 text-center text-[12px] grid grid-cols-3 ">
                                                     <button
-                                                        className="bg-green-200 text-text-primary px-2 py-1 w-[3rem] h-[3rem] mr-4 rounded-full hover:bg-green-300"
+                                                        className="bg-green-200 text-text-primary w-[3rem] h-[3rem] mr-12 rounded-full hover:bg-green-300"
                                                         onClick={() => handleStartAppointment(schedule.id)}
                                                     >
                                                         Başlat
                                                     </button>
+                                                    {/*<button
+                                                        className="bg-blue-200 text-text-primary w-[3rem] h-[3rem] mr-12 rounded-full hover:bg-blue-300"
+                                                    >
+                                                        Düzenle
+                                                    </button>*/}
                                                     <button
-                                                        className="ml-2 bg-red-400 text-white px-2 py-1 w-[3rem] h-[3rem] mr-4 rounded-full hover:bg-red-500"
+                                                        className=" bg-red-400 text-white w-[3rem] h-[3rem] mr-12 rounded-full hover:bg-red-500"
                                                         onClick={() => handleCancelAppointment(schedule.id)}
                                                     >
                                                         İptal

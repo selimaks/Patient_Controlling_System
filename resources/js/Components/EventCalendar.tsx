@@ -1,5 +1,5 @@
 import { useState, MouseEvent, useEffect } from "react"
-import { usePage } from '@inertiajs/react';
+import {router, usePage} from '@inertiajs/react';
 import { Box, Button, ButtonGroup, Card, CardContent, Container, Divider } from "@mui/material"
 import "../../css/app.css"
 
@@ -14,10 +14,9 @@ import { tr } from 'date-fns/locale'
 import "react-big-calendar/lib/css/react-big-calendar.css"
 
 import EventInfo from "./EventInfo"
-import AddEventModal from "./AddEventModal"
 import EventInfoModal from "./EventInfoModal"
 import { AddTodoModal } from "./AddTodoModal"
-import AddDatePickerEventModal from "./AddDatePickerEventModal"
+import {toast} from "react-toastify";
 
 const locales = {
   tr : tr,
@@ -45,7 +44,7 @@ export interface IEventInfo extends Event {
     notes: string
     operation: string
   description: string
-  todoId?: string
+  todoId: string
 }
 
 export interface EventFormData {
@@ -55,7 +54,7 @@ export interface EventFormData {
     status: string
     notes: string
     operation: string
-  todoId?: string
+  todoId: string
 }
 
 export interface DatePickerEventFormData {
@@ -65,7 +64,7 @@ export interface DatePickerEventFormData {
     status: string
     notes: string
     operation: string
-  todoId?: string
+  todoId: string
   allDay: boolean
   start?: Date
   end?: Date
@@ -80,7 +79,7 @@ const initialEventFormState: EventFormData = {
     status: "",
     notes: "",
     operation: "",
-    todoId: undefined,
+    todoId: "",
 }
 
 const initialDatePickerEventFormData: DatePickerEventFormData = {
@@ -90,18 +89,22 @@ const initialDatePickerEventFormData: DatePickerEventFormData = {
     status: "",
     notes: "",
     operation: "",
-  todoId: undefined,
+  todoId: "",
   allDay: false,
   start: undefined,
   end: undefined,
+}
+interface Operation{
+    id: string;
+    color: string;
+    operation: string;
+    created_by: string;
 }
 
 const EventCalendar = () => {
 
     const appointments  = usePage().props.appointments as any;
-    console.log(appointments);
-  const [openSlot, setOpenSlot] = useState(false)
-  const [openDatepickerModal, setOpenDatepickerModal] = useState(false)
+    const operations = usePage().props.operations as Operation[];
   const [openTodoModal, setOpenTodoModal] = useState(false)
   const [currentEvent, setCurrentEvent] = useState<Event | IEventInfo | null>(null)
 
@@ -116,7 +119,6 @@ const EventCalendar = () => {
     useState<DatePickerEventFormData>(initialDatePickerEventFormData)
 
   const handleSelectSlot = (event: Event) => {
-    setOpenSlot(true)
     setCurrentEvent(event)
   }
 
@@ -127,79 +129,62 @@ const EventCalendar = () => {
 
   const handleClose = () => {
     setEventFormData(initialEventFormState)
-    setOpenSlot(false)
   }
 
   const handleDatePickerClose = () => {
     setDatePickerEventFormData(initialDatePickerEventFormData)
-    setOpenDatepickerModal(false)
   }
 
-  const onAddEvent = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-
-    const data: IEventInfo = {
-      ...eventFormData,
-      _id: generateId(),
-      start: currentEvent?.start,
-      end: currentEvent?.end,
-    }
-
-    const newEvents = [...events, data] //Burda yeni event ekleniyor.
-
-    setEvents(newEvents)
-    handleClose()
-  }
+    useEffect(() => {
+        if (operations) {
+            const operationDB = operations.map((operations: Operation) => ({
+                _id: operations.id,
+                title: operations.operation,
+                color: operations.color,
+            }))
+            setTodos(operationDB);
+        }
+    }, []);
 
     useEffect(() => {
         if (appointments) {
             // Veriyi dönüştürerek takvim formatına uyarlıyoruz
-            const appointmentEvents = appointments.map((appointment: any) => ({
-                _id: appointment.id.toString(), // Takvim için benzersiz ID
-                title: `Randevu - ${appointment.patient_id}`, // Başlık
-                operation: `${appointment.operation}`, // Açıklama
-                notes: `${appointment.notes}`,
-                doctor_name: `${appointment.doctor_name}`,
-                patient_name: `${appointment.patient_name}`,
-                start: new Date(`${appointment.appointment_date}T${appointment.appointment_time}`), // Başlangıç zamanı
-                end: new Date(new Date(`${appointment.appointment_date}T${appointment.appointment_time}`).getTime() + 60 * 60 * 1000), // Bitiş zamanı (örnek olarak aynı zamanda)
-                todoId: undefined, // Opsiyonel todoId
-            }));
+            const appointmentEvents = appointments.map((appointment: any) => {
+                const relatedOperation = operations?.find((op: Operation) => op.operation === appointment.operation);
+
+                return {
+                    _id: appointment.id.toString(),
+                    title: `Randevu - ${appointment.patient_id}`,
+                    operation: `${appointment.operation}`,
+                    notes: `${appointment.notes}`,
+                    doctor_name: `${appointment.doctor_name}`,
+                    patient_name: `${appointment.patient_name}`,
+                    start: new Date(`${appointment.appointment_date}T${appointment.appointment_time}`),
+                    end: new Date(new Date(`${appointment.appointment_date}T${appointment.appointment_time}`).getTime() + 60 * 60 * 1000),
+                    todoId: relatedOperation ? relatedOperation.id : null, // Eğer eşleşen operasyon varsa ID'yi ata, yoksa null bırak
+                };
+            });
             setEvents(appointmentEvents); // Çevrilen veriyi takvime ekliyoruz
         }
     }, [appointments]);
 
-  const onAddEventFromDatePicker = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-
-    const addHours = (date: Date | undefined, hours: number) => {
-      return date ? date.setHours(date.getHours() + hours) : undefined
-    }
-
-    const setMinToZero = (date: any) => {
-      date.setSeconds(0)
-
-      return date
-    }
-
-    const data: IEventInfo = {
-      ...datePickerEventFormData,
-      _id: generateId(),
-      start: setMinToZero(datePickerEventFormData.start),
-      end: datePickerEventFormData.allDay
-        ? addHours(datePickerEventFormData.start, 12)
-        : setMinToZero(datePickerEventFormData.end),
-    }
-
-    const newEvents = [...events, data]
-
-    setEvents(newEvents)
-    setDatePickerEventFormData(initialDatePickerEventFormData)
-  }
-
   const onDeleteEvent = () => {
+      if (!currentEvent || !(currentEvent as IEventInfo)._id) {
+          toast.error("Hata: Silinecek randevu bulunamadı!");
+          return;
+      }
     setEvents(() => [...events].filter((e) => e._id !== (currentEvent as IEventInfo)._id!))
     setEventInfoModal(false)
+      router.put('/appointments/delete', { _id: (currentEvent as IEventInfo)._id }, {
+          onSuccess: (page: any) => {
+              console.log('Randevu Silindi:');
+              toast.success(page.props.flash?.message || "Randevu Oluşuturuldu");
+          },
+          onError: (errors: any) => {
+              toast.error(errors?.message || "Hata: Randevu oluşturulamadı!");
+              console.log('Randevu Oluşturulamadı');
+          }
+      });
   }
 
   return (
@@ -217,23 +202,23 @@ const EventCalendar = () => {
           <CardContent>
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <ButtonGroup size="large" variant="contained" aria-label="outlined primary button group">
-                <Button onClick={() => setOpenDatepickerModal(true)} size="small" variant="contained">
-                  Randevu Oluştur
-                </Button>
+                  {/*<Button onClick={() => setOpenDatepickerModal(true)} size="small" variant="contained">
+                      Randevu Oluştur
+                  </Button>*/}
                 <Button onClick={() => setOpenTodoModal(true)} size="small" variant="contained">
                   İşlem Ekle
                 </Button>
               </ButtonGroup>
             </Box>
             <Divider style={{ margin: 10 }} />
-            <AddEventModal
-              open={openSlot}
-              handleClose={handleClose}
-              eventFormData={eventFormData}
-              setEventFormData={setEventFormData}
-              onAddEvent={onAddEvent}
-              todos={todos}
-            />
+              {/*<AddEventModal
+                  open={openSlot}
+                  handleClose={handleClose}
+                  eventFormData={eventFormData}
+                  setEventFormData={setEventFormData}
+                  onAddEvent={onAddEvent}
+                  todos={todos}
+              />
             <AddDatePickerEventModal
               open={openDatepickerModal}
               handleClose={handleDatePickerClose}
@@ -241,7 +226,7 @@ const EventCalendar = () => {
               setDatePickerEventFormData={setDatePickerEventFormData}
               onAddEvent={onAddEventFromDatePicker}
               todos={todos}
-            />
+            />*/}
             <EventInfoModal
               open={eventInfoModal}
               handleClose={() => setEventInfoModal(false)}

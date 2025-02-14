@@ -15,12 +15,6 @@ import {
 import { LocalizationProvider, DateTimePicker } from "@mui/x-date-pickers"
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns"
 import { DatePickerEventFormData, ITodo } from "./EventCalendar"
-import {trTR} from "@mui/material/locale";
-import {dateFnsLocalizer} from "react-big-calendar";
-import format from "date-fns/format";
-import parse from "date-fns/parse";
-import startOfWeek from "date-fns/startOfWeek";
-import getDay from "date-fns/getDay";
 import  tr  from 'date-fns/locale/tr'
 interface IProps {
   open: boolean
@@ -52,30 +46,14 @@ const AddDatePickerEventModal = ({
     }))
   }
 
-  const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setDatePickerEventFormData((prevState) => ({
-      ...prevState,
-      allDay: event.target.checked,
-    }))
-  }
-
-  const handleTodoChange = (e: React.SyntheticEvent, value: ITodo | null) => {
-    setDatePickerEventFormData((prevState) => ({
-      ...prevState,
-      todoId: value?._id,
-    }))
-  }
-
   const isDisabled = () => {
     const checkend = () => {
       if (!allDay && end === null) {
         return true
       }
     }
-    if (description === "" || start === null || checkend()) {
-      return true
-    }
-    return false
+    return description === "" || start === null || checkend();
+
   }
 
   return (
@@ -89,7 +67,7 @@ const AddDatePickerEventModal = ({
             value={description}
             margin="dense"
             id="description"
-            label="Hasta Adı"
+            label="Hasta T.C. Kimlik No"
             type="text"
             fullWidth
             variant="filled"
@@ -136,7 +114,6 @@ const AddDatePickerEventModal = ({
             />
           </LocalizationProvider>
           <Autocomplete
-            onChange={handleTodoChange}
             disablePortal
             id="combo-box-demo"
             options={todos}

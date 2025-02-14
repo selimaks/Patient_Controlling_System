@@ -77,7 +77,6 @@ export default function Patients() {
         });
     };
     //--Radevu kayıtlarının getir bitişi--
-
     //--Hasta Ekleme/Güncelleme Başlangıcı--
     const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
     const [originalPatient, setOriginalPatient] = useState<Patient | null>(null);
@@ -237,7 +236,7 @@ export default function Patients() {
                 },
                 onError: (errors: any) => {
                     toast.error(errors?.message || "Hata: Randevu oluşturulamadı!");
-                    console.log('Randevu Oluşturulamadı');
+                    console.log('Randevu Oluşturulamadı', appointmentDetails);
                 }
         });
         handleModalToggle();
@@ -517,12 +516,12 @@ export default function Patients() {
                                             >
                                                 Randevu kayıtları
                                             </button>
-                                            <button
+                                            {/*<button
                                                 onClick={handleCreateAppointment}
                                                 className="px-4 py-2 bg-dark-button-primary text-text-primary rounded-lg hover:bg-dark-button-secondary transition-all duration-200"
                                             >
                                                 Mesaj
-                                            </button>
+                                            </button>*/}
                                         </div>
                                     )}
                                     </div>

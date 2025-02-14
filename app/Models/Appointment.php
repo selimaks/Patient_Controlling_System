@@ -21,6 +21,7 @@ class Appointment extends Model
         'patient_id',
         'operation',
         'notes',
+        'prescription',
     ];
     public function patient()
     {
