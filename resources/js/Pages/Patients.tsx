@@ -431,7 +431,6 @@ export default function Patients() {
                                             </option>
                                             <option value="male">Erkek</option>
                                             <option value="female">Kadın</option>
-                                            <option value="other">Diğer</option>
                                         </select>
                                     </div>
 

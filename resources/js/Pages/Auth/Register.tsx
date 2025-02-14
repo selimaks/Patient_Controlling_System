@@ -9,7 +9,9 @@ import { FormEventHandler } from 'react';
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
+        gender: 'male',
         email: '',
+        job: 'doctor',
         password: '',
         password_confirmation: '',
     });
@@ -20,6 +22,7 @@ export default function Register() {
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
+        console.log(data);
     };
 
     return (
@@ -28,7 +31,7 @@ export default function Register() {
 
             <form onSubmit={submit}>
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value="Name"/>
 
                     <TextInput
                         id="name"
@@ -41,11 +44,48 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.name} className="mt-2" />
+                    <InputError message={errors.name} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="job" value="Job"/>
+
+                    <select
+                        id="job"
+                        name="job"
+                        value={data.job}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-indigo-600 dark:focus:ring-indigo-600 "
+                        onChange={(e) => setData('job', e.target.value)}
+                        required
+                    >
+                        <option value="doctor">Doktor</option>
+                        <option value="assistant">Asistan</option>
+                        <option value="worker">Çalışan</option>
+                    </select>
+
+                    <InputError message={errors.email} className="mt-2"/>
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="gender" value="Gender"/>
+
+                    <select
+                        id="gender"
+                        name="gender"
+                        value={data.gender}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:focus:border-indigo-600 dark:focus:ring-indigo-600 "
+                        onChange={(e) => setData('gender', e.target.value)}
+                        required
+                    >
+                        <option value="male">Erkek</option>
+                        <option value="female">Kadın</option>
+                    </select>
+
+                    <InputError message={errors.email} className="mt-2"/>
+                </div>
+
+                <div className="mt-4">
+                    <InputLabel htmlFor="email" value="Email"/>
 
                     <TextInput
                         id="email"
@@ -58,11 +98,11 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.email} className="mt-2" />
+                    <InputError message={errors.email} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="Password"/>
 
                     <TextInput
                         id="password"
@@ -75,7 +115,7 @@ export default function Register() {
                         required
                     />
 
-                    <InputError message={errors.password} className="mt-2" />
+                    <InputError message={errors.password} className="mt-2"/>
                 </div>
 
                 <div className="mt-4">

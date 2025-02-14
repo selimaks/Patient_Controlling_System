@@ -19,13 +19,19 @@ const EventInfoModal = ({ open, handleClose, onDeleteEvent, currentEvent }: IPro
       <DialogTitle>Hasta Adı: {currentEvent?.patient_name}</DialogTitle>
       <DialogContent>
         <DialogContentText>
+            <Typography sx={{ fontSize: 16, marginTop: 3 }} color="text.primary" gutterBottom>
+                Tarih: {currentEvent?.appointment_date}
+            </Typography>
+            <Typography sx={{ fontSize: 16, marginTop: 3 }} color="text.primary" gutterBottom>
+                Saat: {currentEvent?.appointment_time}
+            </Typography>
           <Typography sx={{ fontSize: 16, marginTop: 3 }} color="text.primary" gutterBottom>
              Doktor: {currentEvent?.doctor_name}
           </Typography>
-          <Typography sx={{ fontSize: 14, marginTop: 3 }} color="text.secondary" gutterBottom>
-            Yapılacak İşlem: {currentEvent?.operation}
+          <Typography sx={{ fontSize: 16, marginTop: 3 }} color="text.primary" gutterBottom>
+            Operasyon: {currentEvent?.operation}
           </Typography>
-            <Typography sx={{ fontSize: 14, marginTop: 1 }} color="text.secondary" gutterBottom>
+            <Typography sx={{ fontSize: 16, marginTop: 1 }} color="text.primary" gutterBottom>
             Not: {currentEvent?.notes}
           </Typography>
         </DialogContentText>

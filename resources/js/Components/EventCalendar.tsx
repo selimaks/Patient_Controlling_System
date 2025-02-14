@@ -38,6 +38,8 @@ export interface ITodo {
 
 export interface IEventInfo extends Event {
   _id: string
+    appointment_date: string
+    appointment_time: string
     patient_name: string
     doctor_name: string
     status: string
@@ -72,28 +74,6 @@ export interface DatePickerEventFormData {
 
 export const generateId = () => (Math.floor(Math.random() * 10000) + 1).toString()
 
-const initialEventFormState: EventFormData = {
-    patient_name: "", // Doğru isimlendirme
-    description: "",
-    doctor_name: "",
-    status: "",
-    notes: "",
-    operation: "",
-    todoId: "",
-}
-
-const initialDatePickerEventFormData: DatePickerEventFormData = {
-    patient_name: "",
-  description: "",
-    doctor_name: "",
-    status: "",
-    notes: "",
-    operation: "",
-  todoId: "",
-  allDay: false,
-  start: undefined,
-  end: undefined,
-}
 interface Operation{
     id: string;
     color: string;
@@ -146,9 +126,11 @@ const EventCalendar = () => {
                     notes: `${appointment.notes}`,
                     doctor_name: `${appointment.doctor_name}`,
                     patient_name: `${appointment.patient_name}`,
+                    appointment_date: `${appointment.appointment_date}`,
+                    appointment_time: `${appointment.appointment_time}`,
                     start: new Date(`${appointment.appointment_date}T${appointment.appointment_time}`),
                     end: new Date(new Date(`${appointment.appointment_date}T${appointment.appointment_time}`).getTime() + 60 * 60 * 1000),
-                    todoId: relatedOperation ? relatedOperation.id : null, // Eğer eşleşen operasyon varsa ID'yi ata, yoksa null bırak
+                    todoId: relatedOperation ? relatedOperation.id : null,
                 };
             });
             setEvents(appointmentEvents); // Çevrilen veriyi takvime ekliyoruz
