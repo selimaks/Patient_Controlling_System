@@ -4,19 +4,7 @@ import '../../css/mainPage.css'
 
 export default function Welcome({
     auth,
-    laravelVersion,
-    phpVersion,
 }: PageProps<{ laravelVersion: string; phpVersion: string }>) {
-    const handleImageError = () => {
-        document
-            .getElementById('screenshot-container')
-            ?.classList.add('!hidden');
-        document.getElementById('docs-card')?.classList.add('!row-span-1');
-        document
-            .getElementById('docs-card-content')
-            ?.classList.add('!flex-row');
-        document.getElementById('background')?.classList.add('!hidden');
-    };
 
     return (
         <>
@@ -69,21 +57,21 @@ export default function Welcome({
                                 </ul>
                                 <div className='social'>
                                     <div className='social-button' id='mail'>
-                                        <img id='mail' src='https://selimaks.github.io/selimaks.com.tr/emaillogo.png'/>
+                                        <img alt='email' id='mail' src='https://selimaks.github.io/selimaks.com.tr/emaillogo.png'/>
                                     </div>
                                     <div className='social-button' id='linkedin'>
-                                        <img id='mail'
+                                        <img alt='linkedin' id='mail'
                                              src='https://selimaks.github.io/selimaks.com.tr/linkedinlogo.png'/>
                                     </div>
                                     <div className='social-button' id='instagram'>
-                                        <img id='mail' src='https://selimaks.github.io/selimaks.com.tr/instalogo.png'/>
+                                        <img alt='instagram' id='mail' src='https://selimaks.github.io/selimaks.com.tr/instalogo.png'/>
                                     </div>
                                     <div className='social-button' id='twitter'>
-                                        <img id='mail'
+                                        <img alt='twitter' id='mail'
                                              src='https://selimaks.github.io/selimaks.com.tr/twitterlogo.png'/>
                                     </div>
                                     <div className='social-button' id='discord'>
-                                        <img id='mail'
+                                        <img alt='discord' id='mail'
                                              src='https://selimaks.github.io/selimaks.com.tr/discordlogo.png'/>
                                     </div>
                                 </div>
