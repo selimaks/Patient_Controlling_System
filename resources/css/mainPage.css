@@ -1,0 +1,391 @@
+
+:root{
+    --background: #fdfefe;
+    --background-secondary: #e2d4da;
+    --background-tertiary: #d3ccd3;
+    --background-quaternary: #ddc3cd;
+    --background-quinary: #d8afbd;
+    --text-primary: #1d1216;
+    --text-secondary: #344358;
+    --button-primary: #d95b46;
+    --button-secondary: #f8b87c;
+
+    --dark-background: #11123b;
+    --dark-background-secondary: #353753;
+    --dark-background-tertiary: #3d3f5c;
+    --dark-background-quaternary: #4b4c6a;
+    --dark-background-quinary: #565981;
+    --dark-text-primary: #f9f9e1;
+    --dark-text-secondary: #e27225;
+    --dark-button-primary: #9bcddc;
+    --dark-button-secondary: #46abc1;
+
+    --theme1: #78b689;
+    --theme2: #e75140;
+    --border1: #121325;
+    --textfoot: #121325;
+    --textnav: #121325;
+    --categorycolor: #26262e;
+    --title: #00008b;
+
+}
+
+div[name="container"]{
+    height: 920px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+div[name="title"]{
+    width: 75px;
+    font-size: 3em;
+    opacity: 20%;
+    transform: rotateZ(90deg);
+    margin-top: -800px;
+    position: absolute;
+    z-index: 1;
+    left: 0px;
+    white-space: nowrap;
+    color: var(--categorycolor);
+    border-left: solid 3px var(--title);
+    padding-left: 15px;
+}
+
+.selimaks-container{
+    display: grid;
+    justify-content: center;
+}
+
+.nav-buttons li{
+    background-color: var(--dark-button-primary);
+    border: 2px solid var(--border1);
+    border-radius: 25px;
+    padding: 10px 60px 10px 60px;
+    width: 15rem;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 50px;
+    transition: .3s;
+    box-shadow: 5px 7px 20px #000000;
+    color: var(--textnav);
+    white-space: nowrap;
+}
+.nav-buttons li:hover, .social-button:hover, .return:hover{
+    background-color: var(--dark-button-secondary);
+    color: white;
+    cursor: pointer;
+    transform: scale(0.9);
+    box-shadow: 5px 7px 50px #000000;
+}
+.nav-buttons{
+    margin-block-start: unset;
+    margin-block-end: unset;
+    padding-inline-start: unset;
+    display: grid;
+    justify-content: center;
+}
+
+.logo{
+    object-position: 0px 22px;
+    transition: .5s;
+    width: 15rem;
+}
+
+.post{
+    width: 60%;
+    height: 70%;
+    border-radius: 30px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer-container{
+    background-color: transparent;
+    width: 100%;
+    height: 50px;
+    border-top: solid 1px;
+    display: grid;
+    justify-content: center;
+    color: var(--textfoot);
+}
+
+.social{
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    margin-left: 30px;
+}
+
+.social-button{
+    width: 52px;
+    height: 52px;
+    border: solid 1px var(--border1);
+    border-radius: 26px;
+    margin-right: 35px;
+    margin-bottom: 50px;
+    background-color: var(--dark-button-primary);
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    transition: .3s;
+}
+
+img#mail{
+    width: 40px;
+    height: 40px;
+}
+
+.return{
+    width: 52px;
+    height: 52px;
+    background-color: var(--theme2);
+    border: solid 1px var(--border1);
+    border-radius: 26px;
+    right: 15px;
+    bottom: 15px;
+    position: fixed;
+    font-size: 3em;
+    display: flex;
+    justify-content: center;
+    transition: .5s;
+}
+
+div[name="container"] .box {
+    position: relative;
+    width: 40%;
+    height: 70%;
+    background: var(--border1);
+    transition: 0.5s;
+    transform-style: preserve-3d;
+    overflow: hidden;
+    margin-right: 15px;
+    margin-top: 45px;
+    border-radius: 25px;
+}
+
+div[name="container"] .box:hover {
+    transform: rotateY(0deg) scale(1.15);
+    z-index: 1;
+    box-shadow: 0 25px 40px rgba(0,0,0,0.5);
+}
+div[name="container"] .box .imgBx {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+div[name="container"] .box .imgBx:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg,var(--theme2),var(--theme1));
+    z-index: 1;
+    opacity: 0;
+    transition: 0.5s;
+    mix-blend-mode: multiply;
+}
+div[name="container"] .box:hover .imgBx:before {
+    opacity: 1;
+}
+div[name="container"] .box .imgBx img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+div[name="container"] .box .content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    display: flex;
+    padding: 20px;
+    align-items: flex-end;
+    box-sizing: border-box;
+}
+div[name="container"] .box .content h2 {
+    color: white;
+    transition: 0.5s;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    font-size: 20px;
+    transform: translateY(350px);
+    transition-delay: 0.3s;
+}
+div[name="container"] .box:hover .content h2 {
+    transform: translateY(0px);
+}
+div[name="container"] .box .content p {
+    color: white;
+    transition: 0.5s;
+    font-size: 14px;
+    transform: translateY(350px);
+    transition-delay: 0.4s;
+}
+div[name="container"] .box:hover .content p {
+    transform: translateY(0px);
+}
+
+#things{
+    flex-direction: row;
+}
+#things .box{
+    width: 20%;
+    float: left;
+}
+#about .box{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    box-shadow: 1px 1px 25px;
+    position: absolute;
+    margin-top: -500px;
+}
+#about #aboutbox{
+    width: 60%;
+    height: 50%;
+    border-radius: 25px;
+    box-shadow: 1px 1px 25px;
+    position: absolute;
+    left: unset;
+    margin-top: 200px;
+}
+#about #aboutbox .content{
+    align-items: center;
+    justify-content: center;
+}
+#about #aboutbox .content h2 {
+    transform: unset;
+    margin-bottom: 50px;
+    text-align: center;
+}
+#about #aboutbox .content p {
+    transform: unset;
+    text-align: center;
+}
+#about #aboutbox:hover, #about .box:hover{
+    transform: unset;
+    z-index: unset;
+    box-shadow: unset;
+}
+#about #aboutbox .imgBx:before, #about .box .imgBx:before{
+    background: unset;
+}
+
+#projects{
+    flex-direction: row;
+
+}
+.projects-container:last-child{
+    margin-bottom: 0px;
+
+}
+
+@media screen and (max-width:1200px){
+    #things{
+        flex-direction: column;
+    }
+    #cv .box{
+        height: 50%;
+        width: 50%;
+    }
+    #things .box{
+        width: 60%;
+        height: 30%;
+    }
+    div[name="container"] .box:last-child{
+        margin-bottom: 90px;
+    }
+    #projects{
+        flex-direction: column;
+    }
+    #projects .box{
+        width: 70%;
+    }
+}
+
+@media screen and (max-width:1000px){
+    #things{
+        height: 1200px;
+    }
+    #title{
+        transform: translateY(-130px) rotateZ(90deg);
+    }
+    #cv .box{
+        height: 60%;
+        width: 70%;
+    }
+}
+
+@media screen and (max-width:476px){
+    div[name="container"]{
+        height: 770px;
+    }
+    #thingstitle{
+        transform: translateY(-230px) rotateZ(90deg);
+    }
+    #things{
+        height: 1400px;
+    }
+    #cv .box{
+        height: 50%;
+        width: 70%;
+    }
+    .nav-buttons li{
+        display: flex;
+        justify-content: center;
+        margin-bottom: 25px;
+        user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        -moz-user-select: none;
+    }
+    .nav-buttons{
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-top: -44px;
+    }
+    .social-button{
+        margin-right: 35px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        transition: .3s;
+    }
+    .social{
+        width: auto;
+        height: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-left: 30px;
+    }
+    .logo{
+        object-position: 0px 22px;
+    }
+    div[name="title"]{
+        transform: translateY(70px) rotateZ(90deg);
+    }
+    div[name="container"] .box{
+        margin-left: 50px;
+        width: 70%;
+        height: 50%;
+    }
+}
