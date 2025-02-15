@@ -21,7 +21,7 @@ return new class extends Migration
         });
 
         Schema::create('messages', function (Blueprint $table) {
-            $table->id('message_id')->unique()->primary();
+            $table->id('message_id')->unique();
             $table->string('conversation_id');
             $table->timestamps();
             $table->string('patient_id');
