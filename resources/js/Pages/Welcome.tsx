@@ -18,20 +18,20 @@ export default function Welcome({
                                 <ul className='nav-buttons'>
                                     <img alt='Selimaks' className='logo' id='logo'
                                          src={'/logo.png'}/>
-                                    <li>SELIMAKS</li>
                                     {auth.user ? (
                                         <>
+                                            <li>{auth.user.name}</li>
                                             <li>
                                                 <Link href={route('dashboard')}>DASHBOARD</Link>
                                             </li>
                                             <li>
                                                 <Link href={route("patients")} as="button">
-                                                PATIENTS
+                                                    PATIENTS
                                                 </Link>
                                             </li>
                                             <li>
                                                 <Link href={route("appointments")} as="button">
-                                                APPOINTMENTS
+                                                    APPOINTMENTS
                                                 </Link>
                                             </li>
                                             <li>
@@ -46,6 +46,7 @@ export default function Welcome({
                                         </>
                                     ) : (
                                         <>
+                                            <li>SELIMAKS</li>
                                             <li>
                                                 <Link href={route('login')}>LOG IN</Link>
                                             </li>

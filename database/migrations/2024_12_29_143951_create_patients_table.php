@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('old_information')->nullable();//sıralama (isim,doktor,telefon,cinsiyet,eposta,kaydeden/isim,doktor,telefon,cinsiyet,eposta,kaydeden)
             $table->string('TCKN')->unique();
             $table->string('doctor')->nullable();
-            $table->string('phone_number', 20)->unique();
+            $table->string('phone_number', 20);
             $table->string('gender')->nullable();
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
