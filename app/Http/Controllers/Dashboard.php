@@ -18,7 +18,7 @@ class Dashboard extends Controller
 
         return inertia('Dashboard', [
 
-            'totalPatients' => Patient::count(),
+            'totalPatients' => Patient::where('isDeleted', 0)->count(),
             'todaysPatients' => Patient::whereDate('created_at', $today)->count(),
             'todaysAppointments' => Appointment::whereDate('appointment_date', $today)->count(),
             'completedAppointmentsToday' => Appointment::where('status', 'completed')->whereDate('appointment_date', $today)->count(),
