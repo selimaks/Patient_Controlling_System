@@ -8,6 +8,8 @@ Bu döküman, Laravel konusundaki yetkinliğimi geliştirmek amacıyla oluşturd
 
 Bu proje bir **demo** olarak hazırlanmıştır ve şu an için aktif kullanıma açılması planlanmamaktadır.
 
+### [Demo Websitesi İçin Tıklayın](http://3.121.87.98:8080/)
+
 ---
 
 ## 1. Projeye Başlama Sebebi
