@@ -339,7 +339,7 @@ function T(t4, e2, r2, n2) {
   const o2 = new N(t4, e2, r2, n2);
   return t4 ? o2.toString() : o2;
 }
-const appName = "Laravel";
+const appName = "Selimaks";
 createServer(
   (page) => createInertiaApp({
     page,
@@ -347,7 +347,7 @@ createServer(
     title: (title) => `${title} - ${appName}`,
     resolve: (name) => resolvePageComponent(
       `./Pages/${name}.tsx`,
-      /* @__PURE__ */ Object.assign({ "./Pages/Appointments.tsx": () => import("./assets/Appointments-CkXIrzCf.js"), "./Pages/Auth/ConfirmPassword.tsx": () => import("./assets/ConfirmPassword-DcfuyxXd.js"), "./Pages/Auth/ForgotPassword.tsx": () => import("./assets/ForgotPassword-Dq7TZ572.js"), "./Pages/Auth/Login.tsx": () => import("./assets/Login-CFq8Iylx.js"), "./Pages/Auth/Register.tsx": () => import("./assets/Register-DlujxLTb.js"), "./Pages/Auth/ResetPassword.tsx": () => import("./assets/ResetPassword-CtlHHgo7.js"), "./Pages/Auth/VerifyEmail.tsx": () => import("./assets/VerifyEmail-CNL3OF64.js"), "./Pages/Dashboard.tsx": () => import("./assets/Dashboard-A9Ad1JMG.js"), "./Pages/Patients.tsx": () => import("./assets/Patients-pfLNVvgU.js"), "./Pages/Profile/Edit.tsx": () => import("./assets/Edit-BDGTYAiF.js"), "./Pages/Profile/Partials/DeleteUserForm.tsx": () => import("./assets/DeleteUserForm-CRyoRFsl.js"), "./Pages/Profile/Partials/UpdatePasswordForm.tsx": () => import("./assets/UpdatePasswordForm-5tiidph4.js"), "./Pages/Profile/Partials/UpdateProfileInformationForm.tsx": () => import("./assets/UpdateProfileInformationForm-DLc8-kkN.js"), "./Pages/Welcome.tsx": () => import("./assets/Welcome-By_mvvLX.js") })
+      /* @__PURE__ */ Object.assign({ "./Pages/Appointments.tsx": () => import("./assets/Appointments-OuC_Mowd.js"), "./Pages/Auth/ConfirmPassword.tsx": () => import("./assets/ConfirmPassword-D8LwF1UD.js"), "./Pages/Auth/ForgotPassword.tsx": () => import("./assets/ForgotPassword-qMFg_LI9.js"), "./Pages/Auth/Login.tsx": () => import("./assets/Login-CftR83O1.js"), "./Pages/Auth/Register.tsx": () => import("./assets/Register-Dk__aCUD.js"), "./Pages/Auth/ResetPassword.tsx": () => import("./assets/ResetPassword-TADxCNn9.js"), "./Pages/Auth/VerifyEmail.tsx": () => import("./assets/VerifyEmail-CDFa-7vy.js"), "./Pages/Dashboard.tsx": () => import("./assets/Dashboard-B3wWq1X_.js"), "./Pages/Patients.tsx": () => import("./assets/Patients-DcxqHCF3.js"), "./Pages/Profile/Edit.tsx": () => import("./assets/Edit-B_l1kR2_.js"), "./Pages/Profile/Partials/DeleteUserForm.tsx": () => import("./assets/DeleteUserForm-CRyoRFsl.js"), "./Pages/Profile/Partials/UpdatePasswordForm.tsx": () => import("./assets/UpdatePasswordForm-5tiidph4.js"), "./Pages/Profile/Partials/UpdateProfileInformationForm.tsx": () => import("./assets/UpdateProfileInformationForm-DLc8-kkN.js"), "./Pages/Welcome.tsx": () => import("./assets/Welcome-SXjK4zTi.js") })
     ),
     setup: ({ App, props }) => {
       global.route = (name, params, absolute) => T(name, params, absolute, {

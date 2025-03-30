@@ -22,7 +22,6 @@ export default function Register() {
         post(route('register'), {
             onFinish: () => reset('password', 'password_confirmation'),
         });
-        console.log(data);
     };
 
     return (

@@ -13,7 +13,8 @@
         "laravel/sail": "^1.39",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
-        "tightenco/ziggy": "^2.0"
+        "tightenco/ziggy": "^2.0",
+        "ufee/sqlite3": "^1.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
